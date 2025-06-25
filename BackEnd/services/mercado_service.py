@@ -46,11 +46,11 @@ class Mercado_service:
             conn.close()
             detalhes = str(e)
             if "UNIQUE" in detalhes:
-                return {"erro": "nome duplicado de mercado", "detalhes": detalhes}
-            return {"erro": "erro ao incluir mercado", "detalhes": detalhes}
+                return {"erro": "Nome duplicado de mercado", "detalhes": detalhes}
+            return {"erro": "Erro ao incluir mercado", "detalhes": detalhes}
         except sqlite3.Error as e:
             conn.close()
-            return {"erro": "erro geral do banco de dados ao incluir mercado", "detalhes": str(e)}
+            return {"erro": "Erro geral do banco de dados ao incluir mercado", "detalhes": str(e)}
         
     def delete(id):
         conn = get_connection()
@@ -63,20 +63,20 @@ class Mercado_service:
             if cur.rowcount==1:
                 conn.commit()
                 conn.close()
-                return {"sucesso":"mercado excluido"}
+                return {"sucesso":"Mercado excluido"}
             if cur.rowcount==0:
                 conn.commit()
                 conn.close()
-                return {"erro":"mercado inexistente"}
+                return {"erro":"Mercado inexistente"}
         except sqlite3.IntegrityError as e:
             conn.close()
             detalhes = str(e)
             if "FOREIGN KEY" in detalhes:
-                return {"erro": "mercado utilizado em alguma lista de compras", "detalhes": detalhes}
-            return {"erro": "erro ao excluir mercado", "detalhes": detalhes}
+                return {"erro": "Mercado utilizado em alguma lista de compras", "detalhes": detalhes}
+            return {"erro": "Erro ao excluir mercado", "detalhes": detalhes}
         except sqlite3.Error as e:
             conn.close()
-            return {"erro": "erro geral do banco de dados ao excluir mercado", "detalhes": str(e)}
+            return {"erro": "Erro geral do banco de dados ao excluir mercado", "detalhes": str(e)}
         
     def update(id,nome):
         conn = get_connection()
@@ -94,13 +94,13 @@ class Mercado_service:
             if cur.rowcount==0:
                 conn.commit()
                 conn.close()
-                return {"erro":"mercado inexistente"}
+                return {"erro":"Mercado inexistente"}
         except sqlite3.IntegrityError as e:
             conn.close()
             detalhes = str(e)
             if "UNIQUE" in detalhes:
-                return {"erro": "nome duplicado de mercado", "detalhes": detalhes}
-            return {"erro": "erro ao alterar mercado", "detalhes": detalhes}
+                return {"erro": "Nome duplicado de mercado", "detalhes": detalhes}
+            return {"erro": "Erro ao alterar mercado", "detalhes": detalhes}
         except sqlite3.Error as e:
             conn.close()
-            return {"erro": "erro geral do banco de dados ao alterar mercado", "detalhes": str(e)}
+            return {"erro": "Erro geral do banco de dados ao alterar mercado", "detalhes": str(e)}

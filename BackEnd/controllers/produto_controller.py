@@ -46,10 +46,10 @@ def update():
     dados = request.json
     if not dados or "id" not in dados or dados['id']=="":
         response.status = 400
-        return {'erro': 'id não preenchido'}
+        return {'erro': 'Id não preenchido'}
     if not dados or "nome" not in dados or dados['nome']=="":
         response.status = 400
-        return {'erro': 'nome não preenchido'}
+        return {'erro': 'Nome não preenchido'}
     produto = Produto_service.update(dados['id'],dados['nome'])
     response.status=200
     if "erro" in produto:

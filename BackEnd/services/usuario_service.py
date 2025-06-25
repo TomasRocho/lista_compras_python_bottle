@@ -48,11 +48,11 @@ class Usuario_service:
             conn.close()
             detalhes = str(e)
             if "UNIQUE" in detalhes:
-                return {"erro": "nome ou email duplicados de usuário", "detalhes": detalhes}
-            return {"erro": "erro ao incluir usuário", "detalhes": detalhes}
+                return {"erro": "Nome ou email duplicados de usuário", "detalhes": detalhes}
+            return {"erro": "Erro ao incluir usuário", "detalhes": detalhes}
         except sqlite3.Error as e:
             conn.close()
-            return {"erro": "erro geral do banco de dados ao incluir usuario", "detalhes": str(e)}
+            return {"erro": "Erro geral do banco de dados ao incluir usuario", "detalhes": str(e)}
         
     def delete(id):
         conn = get_connection()
@@ -65,20 +65,20 @@ class Usuario_service:
             if cur.rowcount==1:
                 conn.commit()
                 conn.close()
-                return {"sucesso":"usuario excluido"}
+                return {"sucesso":"Usuario excluido"}
             if cur.rowcount==0:
                 conn.commit()
                 conn.close()
-                return {"erro":"usuario inexistente"}
+                return {"erro":"Usuario inexistente"}
         except sqlite3.IntegrityError as e:
             conn.close()
             detalhes = str(e)
             if "FOREIGN KEY" in detalhes:
-                return {"erro": "usuario utilizado em alguma lista de compras", "detalhes": detalhes}
-            return {"erro": "erro ao excluir usuario", "detalhes": detalhes}
+                return {"erro": "Usuario utilizado em alguma lista de compras", "detalhes": detalhes}
+            return {"erro": "Erro ao excluir usuario", "detalhes": detalhes}
         except sqlite3.Error as e:
             conn.close()
-            return {"erro": "erro geral do banco de dados ao excluir usuario", "detalhes": str(e)}
+            return {"erro": "Erro geral do banco de dados ao excluir usuario", "detalhes": str(e)}
         
     def update(id,nome,email,senha,dataNascimento,administrador):
         conn = get_connection()
@@ -99,14 +99,14 @@ class Usuario_service:
             if cur.rowcount==0:
                 conn.commit()
                 conn.close()
-                return {"erro":"usuario inexistente"}
+                return {"erro":"Usuario inexistente"}
         except sqlite3.IntegrityError as e:
             conn.close()
             detalhes = str(e)
             if "UNIQUE" in detalhes:
-                return {"erro": "nome ou email duplicado de usuario", "detalhes": detalhes}
-            return {"erro": "erro ao alterar usuario", "detalhes": detalhes}
+                return {"erro": "Nome ou email duplicado de usuario", "detalhes": detalhes}
+            return {"erro": "Erro ao alterar usuario", "detalhes": detalhes}
         except sqlite3.Error as e:
             conn.close()
-            return {"erro": "erro geral do banco de dados ao alterar usuario", "detalhes": str(e)}
+            return {"erro": "Erro geral do banco de dados ao alterar usuario", "detalhes": str(e)}
     

@@ -10,12 +10,15 @@
 
     <h1>Confirmar Exclusão</h1>
 
-    <p>Tem certeza de que deseja excluir o produto <strong>"{{produto['nome']}}"</strong>?</p>
-
-    <form action="/produto/exclusaoConfirmada/{{produto['id']}}">
-        <button type="submit">Sim, excluir</button>
-        <a href="/produto">Cancelar</a>
-    </form>
+    <div class="conteudo">
+        <p>Tem certeza de que deseja excluir o produto <strong>"{{produto['nome']}}"</strong>?</p>
+    </div>
+    <div class="conteudo">
+        <form action="/produto/excluir/{{produto['id']}}">
+            <button type="submit">Sim, excluir</button>
+            <a href="/produto">Cancelar</a>
+        </form>
+    </div>
 
 </body>
 </html>

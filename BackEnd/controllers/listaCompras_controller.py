@@ -36,10 +36,10 @@ def create():
         return {'erro': 'Data da compra não preenchida'}
     if not dados or "idMercado" not in dados or dados['idMercado']=="":
         response.status = 400
-        return {'erro': 'idMercado não preenchido'}
+        return {'erro': 'IdMercado não preenchido'}
     if not dados or "idUsuario" not in dados or dados['idUsuario']=="":
         response.status = 400
-        return {'erro': 'idUsuario não preenchido'}
+        return {'erro': 'IdUsuario não preenchido'}
     listaCompras = ListaCompras_service.create(dados['nome'],dados['dataCompra'],dados['idMercado'],dados['idUsuario'])
     response.status=201
     if "erro" in listaCompras:
@@ -59,7 +59,7 @@ def update():
     dados = request.json
     if not dados or "id" not in dados or dados['id']=="":
         response.status = 400
-        return {'erro': 'id não preenchido'}
+        return {'erro': 'Id não preenchido'}
     if not dados or "nome" not in dados or dados['nome']=="":
         response.status = 400
         return {'erro': 'Nome não preenchido'}
@@ -68,10 +68,10 @@ def update():
         return {'erro': 'Data da compra não preenchida'}
     if not dados or "idMercado" not in dados or dados['idMercado']=="":
         response.status = 400
-        return {'erro': 'idMercado não preenchido'}
+        return {'erro': 'IdMercado não preenchido'}
     if not dados or "idUsuario" not in dados or dados['idUsuario']=="":
         response.status = 400
-        return {'erro': 'idUsuario não preenchido'}
+        return {'erro': 'IdUsuario não preenchido'}
     listaCompras = ListaCompras_service.update(dados['id'],dados['nome'],dados['dataCompra'],dados['idMercado'],dados['idUsuario'])
     response.status=200
     if "erro" in listaCompras:

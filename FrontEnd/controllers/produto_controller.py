@@ -8,8 +8,8 @@ def listaProduto():
     try:
         API_URL = 'http://localhost:8080/produto'
         response = requests.get(API_URL)
-        response.raise_for_status()  # Lança exceção se status != 200
-        produtos = response.json()   # Assume que a API retorna JSON
+        response.raise_for_status()
+        produtos = response.json() 
     except requests.RequestException as e:
         produtos = []
         print(f"Erro ao acessar API: {e}")
@@ -27,18 +27,10 @@ def editaProduto(id):
     print(produtoRetornado)
     return template('editaProduto.tpl',produto=produtoRetornado) 
 
-@produto_controller.route('/produto/excluir/<id>')
-def excluiProduto(id):
-    API_URL = 'http://localhost:8080/produto/'+id
-    response = requests.get(API_URL)
-    produtoRetornado = response.json() 
-    print(produtoRetornado)
-    return template('confirmaExclusao.tpl',produto=produtoRetornado) 
-
 @produto_controller.route('/produto/salvar', method='POST')
 def salvaProduto():
     try:
-        nome = request.forms.get('nome')
+        nome = request.forms.getunicode('nome')
         id = request.forms.get('id')
         API_URL = 'http://localhost:8080/produto'
         if id=='':
@@ -47,7 +39,7 @@ def salvaProduto():
             }
             response = requests.post(API_URL,json=payload)
             if response.status_code!=201:
-                return template('erro.tpl',mensagem=response.json().get('erro'))
+                return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Salvar Produto")
         else:
             payload = {
                 'id': id,
@@ -55,21 +47,31 @@ def salvaProduto():
             }
             response = requests.put(API_URL,json=payload)
             if response.status_code!=200:
-                return template('erro.tpl',mensagem=response.json().get('erro'))
+                return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Salvar Produto")
 
     except Exception as e:
-        return template('erro', mensagem="Erro ao se comunicar com o servidor: " + str(e))
+        return template('erro', mensagem="Erro ao se comunicar com o servidor: " + str(e), tipoErro="Erro ao Salvar Produto")
     redirect('/produto')
 
-@produto_controller.route('/produto/exclusaoConfirmada/<id>')
-def exclusaoConfirmadaProduto(id):
+@produto_controller.route('/produto/confirmaExclusao/<id>')
+def confirmaExclusaoProduto(id):
+    API_URL = 'http://localhost:8080/produto/'+id
+    response = requests.get(API_URL)
+    produtoRetornado = response.json() 
+    print(produtoRetornado)
+    return template('confirmaExclusao.tpl',produto=produtoRetornado) 
+
+
+
+@produto_controller.route('/produto/excluir/<id>')
+def excluiProduto(id):
     try:
         API_URL = 'http://localhost:8080/produto/' + id
         print(API_URL)
         response = requests.delete(API_URL)
         if response.status_code!=200:
-                return template('erro.tpl',mensagem=response.json().get('erro'))
+                return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Excluir Produto")
     except Exception as e:
-        return template('erro', mensagem="Erro ao se comunicar com o servidor: " + str(e))
+        return template('erro', mensagem="Erro ao se comunicar com o servidor: " + str(e), tipoErro="Erro ao Excluir Produto")
     redirect('/produto')    
     

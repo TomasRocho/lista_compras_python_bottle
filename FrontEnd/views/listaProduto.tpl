@@ -9,28 +9,30 @@
 <body>
 
     <h1>Lista de Produtos</h1>
-    <a href="/produto/novo" class="botao-incluir">Incluir novo produto</a>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            % for produto in produtos:
+    <div class="conteudo">
+        <a href="/produto/novo" >Incluir novo produto</a>
+        <p/>
+        <table>
+            <thead>
                 <tr>
-                    <td>{{produto['id']}}</td>
-                    <td>{{produto['nome']}}</td>
-                    <td>
-                        <div><a href="/produto/editar/{{produto['id']}}">Editar</a></div>
-                        <div><a href="/produto/excluir/{{produto['id']}}">Excluir</a></div>
-                    </td>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Ações</th>
                 </tr>
-            % end
-        </tbody>
-    </table>
-
+            </thead>
+            <tbody>
+                % for produto in produtos:
+                    <tr>
+                        <td>{{produto['id']}}</td>
+                        <td>{{produto['nome']}}</td>
+                        <td>
+                            <a href="/produto/editar/{{produto['id']}}">Editar</a>
+                            <a href="/produto/confirmaExclusao/{{produto['id']}}">Excluir</a>
+                        </td>
+                    </tr>
+                % end
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

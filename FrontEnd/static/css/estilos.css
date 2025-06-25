@@ -21,3 +21,66 @@ th, td {
 th {
     background-color: #f4f4f4;
 }
+
+a:link, a:visited {
+    background-color: #f2f2f2;;
+    color: black;
+    border: 2px solid #ddd;
+    padding: 2px 4px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+a:hover, a:active {
+    background-color: red;
+    color: white;
+}
+
+button {
+    border: 2px solid #ddd;
+    padding: 4px 6px;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2; /* cinza claro */
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ddd; /* cinza escuro */
+}
+
+form input[type="text"],
+form button {
+    display: block;
+    margin-top: 10px;
+}
+
+.conteudo {
+    border: 2px solid #ccc;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    background-color: #fafafa;
+}
+
+.body_erro {
+        font-family: Arial, sans-serif;
+        padding: 2em;
+        background-color: #fef2f2;
+        color: #b91c1c;
+    }
+
+.container_erro {
+        max-width: 600px;
+        margin: auto;
+        border: 1px solid #fecaca;
+        background-color: #fff;
+        padding: 1.5em;
+        border-radius: 8px;
+        box-shadow: 0 0 10px #fca5a5;
+    }
+    
+.h1_erro {
+            color: #b91c1c;
+        }

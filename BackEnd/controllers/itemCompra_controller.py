@@ -40,7 +40,7 @@ def create():
         return {'erro': 'Valor unitario não preenchido'}
     if not dados or "quantidade" not in dados or dados['quantidade']=="":
         response.status = 400
-        return {'erro': 'quantidade não preenchida'}
+        return {'erro': 'Quantidade não preenchida'}
     itemCompra = ItemCompra_service.create(dados['idListaCompras'],dados['idProduto'],dados['valorUnitario'],dados['quantidade'])
     response.status=201
     if "erro" in itemCompra:
@@ -60,7 +60,7 @@ def update():
     dados = request.json
     if not dados or "id" not in dados or dados['id']=="":
         response.status = 400
-        return {'erro': 'id não preenchido'}
+        return {'erro': 'Id não preenchido'}
     if not dados or "idListaCompras" not in dados or dados['idListaCompras']=="":
         response.status = 400
         return {'erro': 'ListaCompras não preenchida'}
@@ -72,7 +72,7 @@ def update():
         return {'erro': 'Valor unitario não preenchido'}
     if not dados or "quantidade" not in dados or dados['quantidade']=="":
         response.status = 400
-        return {'erro': 'quantidade não preenchida'}
+        return {'erro': 'Quantidade não preenchida'}
     itemCompra = ItemCompra_service.update(dados['id'],dados['idListaCompras'],dados['idProduto'],dados['valorUnitario'],dados['quantidade'])
     response.status=200
     if "erro" in itemCompra:

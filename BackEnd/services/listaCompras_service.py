@@ -63,13 +63,13 @@ class ListaCompras_service:
             conn.close()
             detalhes = str(e)
             if "UNIQUE" in detalhes:
-                return {"erro": "nome duplicado de listaCompras", "detalhes": detalhes}
+                return {"erro": "Nome duplicado de listaCompras", "detalhes": detalhes}
             if "FOREIGN KEY" in detalhes:
-                return {"erro": "idMercado ou idUsuario inválidos", "detalhes": detalhes}
+                return {"erro": "IdMercado ou idUsuario inválidos", "detalhes": detalhes}
             return {"erro": "erro ao incluir listaCompras", "detalhes": detalhes}
         except sqlite3.Error as e:
             conn.close()
-            return {"erro": "erro geral do banco de dados ao incluir listaCompras", "detalhes": str(e)}
+            return {"erro": "Erro geral do banco de dados ao incluir listaCompras", "detalhes": str(e)}
         
     def delete(id):
         conn = get_connection()
@@ -82,20 +82,20 @@ class ListaCompras_service:
             if cur.rowcount==1:
                 conn.commit()
                 conn.close()
-                return {"sucesso":"lista excluida"}
+                return {"sucesso":"Lista excluida"}
             if cur.rowcount==0:
                 conn.commit()
                 conn.close()
-                return {"erro":"lista inexistente"}
+                return {"erro":"Lista inexistente"}
         except sqlite3.IntegrityError as e:
             conn.close()
             detalhes = str(e)
             if "FOREIGN KEY" in detalhes:
-                return {"erro": "lista possui itens", "detalhes": detalhes}
+                return {"erro": "Lista possui itens", "detalhes": detalhes}
             return {"erro": "erro ao excluir lista", "detalhes": detalhes}
         except sqlite3.Error as e:
             conn.close()
-            return {"erro": "erro geral do banco de dados ao excluir lista", "detalhes": str(e)}
+            return {"erro": "Erro geral do banco de dados ao excluir lista", "detalhes": str(e)}
         
     def update(id,nome,dataCompra,idMercado,idUsuario):
         conn = get_connection()
@@ -116,17 +116,17 @@ class ListaCompras_service:
             if cur.rowcount==0:
                 conn.commit()
                 conn.close()
-                return {"erro":"lista inexistente"}
+                return {"erro":"Lista inexistente"}
         except sqlite3.IntegrityError as e:
             conn.close()
             detalhes = str(e)
             if "UNIQUE" in detalhes:
-                return {"erro": "nome duplicado de lista", "detalhes": detalhes}
+                return {"erro": "Nome duplicado de lista", "detalhes": detalhes}
             if "FOREIGN KEY" in detalhes:
-                return {"erro": "idMercado ou idUsuario inexistentes", "detalhes": detalhes}
+                return {"erro": "IdMercado ou idUsuario inexistentes", "detalhes": detalhes}
             return {"erro": "erro ao alterar lista", "detalhes": detalhes}
         except sqlite3.Error as e:
             conn.close()
-            return {"erro": "erro geral do banco de dados ao alterar lista", "detalhes": str(e)}
+            return {"erro": "Erro geral do banco de dados ao alterar lista", "detalhes": str(e)}
     
     

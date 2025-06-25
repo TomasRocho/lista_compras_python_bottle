@@ -46,11 +46,11 @@ class Produto_service:
             conn.close()
             detalhes = str(e)
             if "UNIQUE" in detalhes:
-                return {"erro": "nome duplicado de produto", "detalhes": detalhes}
-            return {"erro": "erro ao incluir produto", "detalhes": detalhes}
+                return {"erro": "Nome duplicado de produto", "detalhes": detalhes}
+            return {"erro": "Erro ao incluir produto", "detalhes": detalhes}
         except sqlite3.Error as e:
             conn.close()
-            return {"erro": "erro geral do banco de dados ao incluir produto", "detalhes": str(e)}
+            return {"erro": "Erro geral do banco de dados ao incluir produto", "detalhes": str(e)}
         
     def delete(id):
         conn = get_connection()
@@ -63,20 +63,20 @@ class Produto_service:
             if cur.rowcount==1:
                 conn.commit()
                 conn.close()
-                return {"sucesso":"produto excluido"}
+                return {"sucesso":"Produto excluido"}
             if cur.rowcount==0:
                 conn.commit()
                 conn.close()
-                return {"erro":"produto inexistente"}
+                return {"erro":"Produto inexistente"}
         except sqlite3.IntegrityError as e:
             conn.close()
             detalhes = str(e)
             if "FOREIGN KEY" in detalhes:
-                return {"erro": "produto utilizado em alguma lista de compras", "detalhes": detalhes}
-            return {"erro": "erro ao excluir produto", "detalhes": detalhes}
+                return {"erro": "Produto utilizado em alguma lista de compras", "detalhes": detalhes}
+            return {"erro": "Erro ao excluir produto", "detalhes": detalhes}
         except sqlite3.Error as e:
             conn.close()
-            return {"erro": "erro geral do banco de dados ao excluir produto", "detalhes": str(e)}
+            return {"erro": "Erro geral do banco de dados ao excluir produto", "detalhes": str(e)}
         
     def update(id,nome):
         conn = get_connection()
@@ -94,16 +94,16 @@ class Produto_service:
             if cur.rowcount==0:
                 conn.commit()
                 conn.close()
-                return {"erro":"produto inexistente"}
+                return {"erro":"Produto inexistente"}
         except sqlite3.IntegrityError as e:
             conn.close()
             detalhes = str(e)
             if "UNIQUE" in detalhes:
-                return {"erro": "nome duplicado de produto", "detalhes": detalhes}
-            return {"erro": "erro ao alterar produto", "detalhes": detalhes}
+                return {"erro": "Nome duplicado de produto", "detalhes": detalhes}
+            return {"erro": "Erro ao alterar produto", "detalhes": detalhes}
         except sqlite3.Error as e:
             conn.close()
-            return {"erro": "erro geral do banco de dados ao alterar produto", "detalhes": str(e)}
+            return {"erro": "Erro geral do banco de dados ao alterar produto", "detalhes": str(e)}
         
             
         
