@@ -7,7 +7,7 @@ class Mercado_service:
         conn = get_connection()
         cur = conn.cursor()
         stringSQL = """
-                    select * from mercado
+                    select * from mercado order by nome
                     """
         cur.execute(stringSQL)
         rows = cur.fetchall()

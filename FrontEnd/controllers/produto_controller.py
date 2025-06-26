@@ -59,7 +59,7 @@ def confirmaExclusaoProduto(id):
     response = requests.get(API_URL)
     produtoRetornado = response.json() 
     print(produtoRetornado)
-    return template('confirmaExclusao.tpl',produto=produtoRetornado) 
+    return template('confirmaExclusao.tpl',nomeObjeto='produto',descricaoObjeto=produtoRetornado.get('nome'),id=id) 
 
 
 

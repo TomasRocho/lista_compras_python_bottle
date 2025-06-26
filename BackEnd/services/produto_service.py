@@ -7,7 +7,7 @@ class Produto_service:
         conn = get_connection()
         cur = conn.cursor()
         stringSQL = """
-                    select * from produto
+                    select * from produto order by nome
                     """
         cur.execute(stringSQL)
         rows = cur.fetchall()
