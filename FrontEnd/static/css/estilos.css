@@ -53,8 +53,10 @@ tbody tr:nth-child(odd) {
 form input[type="text"],
 form button {
     display: block;
-    margin-top: 10px;
+    margin-bottom: 10px;
+
 }
+
 
 .conteudo {
     border: 2px solid #ccc;

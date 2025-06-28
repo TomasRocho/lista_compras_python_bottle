@@ -61,16 +61,13 @@ def update():
     if not dados or "email" not in dados or dados['email']=="":
         response.status = 400
         return {'erro': 'Email não preenchido'}
-    if not dados or "senha" not in dados or dados['senha']=="":
-        response.status = 400
-        return {'erro': 'Senha não preenchida'}
     if not dados or "dataNascimento" not in dados or dados['dataNascimento']=="":
         response.status = 400
         return {'erro': 'Data de nascimento não preenchida'}
     if not dados or "administrador" not in dados or dados['administrador']=="":
         response.status = 400
         return {'erro': 'Administrador não preenchido'}
-    usuario = Usuario_service.update(dados['id'],dados['nome'],dados['email'],dados['senha'],dados['dataNascimento'],dados['administrador'])
+    usuario = Usuario_service.update(dados['id'],dados['nome'],dados['email'],dados['dataNascimento'],dados['administrador'])
     response.status=200
     if "erro" in usuario:
         response.status = 500

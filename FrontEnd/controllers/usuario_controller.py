@@ -1,0 +1,96 @@
+from bottle import Bottle, template, request, redirect
+import requests
+from datetime import datetime
+from util.criptografia import criptografar_string
+
+
+usuario_controller = Bottle()
+
+@usuario_controller.route('/usuario')
+def listaUsuario():
+    try:
+        API_URL = 'http://localhost:8080/usuario'
+        response = requests.get(API_URL)
+        response.raise_for_status()
+        usuarios = response.json() 
+        for usuario in usuarios:
+            usuario["dataNascimento"] = datetime.strptime(usuario["dataNascimento"], "%Y-%m-%d").strftime("%d/%m/%Y")
+    except requests.RequestException as e:
+        usuarios = []
+        print(f"Erro ao acessar API: {e}")
+    return template('listaUsuario.tpl',usuarios=usuarios)    
+
+@usuario_controller.route('/usuario/novo')
+def novoUsuario():
+    return template('editaUsuario.tpl',usuario=None,exibeAdministrador=False,exibeSenha=True)
+
+@usuario_controller.route('/usuario/editar/<id>')
+def editaUsuario(id):
+    API_URL = 'http://localhost:8080/usuario/'+id
+    response = requests.get(API_URL)
+    usuarioRetornado = response.json() 
+    usuarioRetornado["dataNascimento"] = datetime.strptime(usuarioRetornado["dataNascimento"], "%Y-%m-%d").strftime("%d/%m/%Y")
+    return template('editaUsuario.tpl',usuario=usuarioRetornado,exibeAdministrador=True,exibeSenha=False) 
+
+@usuario_controller.route('/usuario/salvar', method='POST')
+def salvaUsuario():
+    try:
+        nome = request.forms.getunicode('nome')
+        id = request.forms.get('id')
+        dataNascimento = request.forms.get('dataNascimento')
+        dataNascimento = datetime.strptime(dataNascimento, "%d/%m/%Y").strftime("%Y-%m-%d")
+        email = request.forms.get('email')
+        administrador = 1 if request.forms.get('administrador') else 0
+        senha = criptografar_string(request.forms.get('senha'))
+
+        API_URL = 'http://localhost:8080/usuario'
+        #inclusao
+        if id=='':
+            payload = {
+                'nome': nome,
+                'dataNascimento': dataNascimento,
+                'email': email,
+                'senha': senha
+            }
+            response = requests.post(API_URL,json=payload)
+            if response.status_code!=201:
+                return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Salvar Usuario")
+        #alteracao    
+        else:
+            payload = {
+                'id': id,
+                'nome': nome,
+                'dataNascimento': dataNascimento,
+                'email': email,
+                'administrador': administrador,
+                'senha': senha
+            }
+            response = requests.put(API_URL,json=payload)
+            if response.status_code!=200:
+                return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Salvar Usuario")
+
+    except Exception as e:
+        return template('erro', mensagem="Erro ao se comunicar com o servidor: " + str(e), tipoErro="Erro ao Salvar Usuario")
+    redirect('/usuario')
+
+@usuario_controller.route('/usuario/confirmaExclusao/<id>')
+def confirmaExclusaoUsuario(id):
+    API_URL = 'http://localhost:8080/usuario/'+id
+    response = requests.get(API_URL)
+    usuarioRetornado = response.json() 
+    return template('confirmaExclusao.tpl',nomeObjeto='usuario',descricaoObjeto=usuarioRetornado.get('nome'),id=id) 
+
+
+
+@usuario_controller.route('/usuario/excluir/<id>')
+def excluirUsuario(id):
+    try:
+        API_URL = 'http://localhost:8080/usuario/' + id
+        print(API_URL)
+        response = requests.delete(API_URL)
+        if response.status_code!=200:
+                return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Excluir Usuario")
+    except Exception as e:
+        return template('erro', mensagem="Erro ao se comunicar com o servidor: " + str(e), tipoErro="Erro ao Excluir Usuario")
+    redirect('/usuario')    
+    

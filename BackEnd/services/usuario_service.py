@@ -84,10 +84,10 @@ class Usuario_service:
         conn = get_connection()
         cur = conn.cursor()
         stringSQL = """
-                    update usuario set nome = ?, email = ?, senha = ?, dataNascimento = ? , administrador = ? where id = ?
+                    update usuario set nome = ?, email = ?, dataNascimento = ? , administrador = ? where id = ?
                     """
         try:
-            cur.execute(stringSQL,(nome,email,senha,dataNascimento,administrador,id,))
+            cur.execute(stringSQL,(nome,email,dataNascimento,administrador,id,))
             if cur.rowcount==1:
                 conn.commit()
                 conn.close()
