@@ -51,6 +51,7 @@ tbody tr:nth-child(odd) {
 }
 
 form input[type="text"],
+form input[type="password"],
 form button {
     display: block;
     margin-bottom: 10px;
@@ -86,3 +87,5 @@ form button {
 .h1_erro {
             color: #b91c1c;
         }
+
+      

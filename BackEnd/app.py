@@ -5,7 +5,6 @@ from controllers.produto_controller import produto_controller
 from controllers.listaCompras_controller import listaCompras_controller
 from controllers.itemCompra_controller import itemCompra_controller
 
-
 app = Bottle()
 app.merge(mercado_controller)
 app.merge(usuario_controller)

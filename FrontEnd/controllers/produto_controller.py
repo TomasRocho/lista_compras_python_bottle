@@ -1,5 +1,6 @@
 from bottle import Bottle, template, request, redirect
 import requests
+from middleware.auth import admin_required
 
 produto_controller = Bottle()
 

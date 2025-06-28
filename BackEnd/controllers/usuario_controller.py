@@ -72,3 +72,36 @@ def update():
     if "erro" in usuario:
         response.status = 500
     return usuario
+
+@usuario_controller.put('/usuario/alterarSenha')
+def alterarSenha():
+    dados = request.json
+    if not dados or "idUsuario" not in dados or dados['idUsuario']=="":
+        response.status = 400
+        return {'erro': 'Id não preenchido'}
+    if not dados or "senhaNova" not in dados or dados['senhaNova']=="":
+        response.status = 400
+        return {'erro': 'Senha nova não preenchida'}
+    if not dados or "senhaAntiga" not in dados or dados['senhaAntiga']=="":
+        response.status = 400
+        return {'erro': 'Senha antiga não preenchida'}
+    ret = Usuario_service.alterarSenha(dados['idUsuario'],dados['senhaAntiga'],dados['senhaNova'])
+    response.status=200
+    if "erro" in ret:
+        response.status = 500
+    return ret
+
+@usuario_controller.post('/login')
+def login():
+    dados = request.json
+    if not dados or "email" not in dados or dados['email']=="":
+        response.status = 400
+        return {'erro': 'email não preenchido'}
+    if not dados or "senha" not in dados or dados['senha']=="":
+        response.status = 400
+        return {'erro': 'Senha não preenchida'}
+    usuarioLogado = Usuario_service.logar(dados['email'],dados['senha'])
+    response.status=200
+    if "erro" in usuarioLogado:
+        response.status = 500
+    return usuarioLogado

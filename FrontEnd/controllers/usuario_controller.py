@@ -1,7 +1,6 @@
 from bottle import Bottle, template, request, redirect
 import requests
 from datetime import datetime
-from util.criptografia import criptografar_string
 
 
 usuario_controller = Bottle()
@@ -41,7 +40,7 @@ def salvaUsuario():
         dataNascimento = datetime.strptime(dataNascimento, "%d/%m/%Y").strftime("%Y-%m-%d")
         email = request.forms.get('email')
         administrador = 1 if request.forms.get('administrador') else 0
-        senha = criptografar_string(request.forms.get('senha'))
+        senha = request.forms.get('senha')
 
         API_URL = 'http://localhost:8080/usuario'
         #inclusao
@@ -93,4 +92,68 @@ def excluirUsuario(id):
     except Exception as e:
         return template('erro', mensagem="Erro ao se comunicar com o servidor: " + str(e), tipoErro="Erro ao Excluir Usuario")
     redirect('/usuario')    
+
+@usuario_controller.route('/usuario/alterarSenha/<id>')
+def alteraSenha(id):
+    API_URL = 'http://localhost:8080/usuario/'+id
+    response = requests.get(API_URL)
+    usuarioRetornado = response.json() 
+    return template('alteraSenha.tpl',usuario=usuarioRetornado) 
+
+@usuario_controller.route('/usuario/salvarNovaSenha', method='POST')
+def salvaNovaSenha():
+    try:
+        idUsuario = request.forms.get('id')
+        senhaAntiga = request.forms.get('senhaAntiga')
+        senhaNova = request.forms.get('senhaNova')
+
+        API_URL = 'http://localhost:8080/usuario/alterarSenha'
+        
+        payload = {
+            'idUsuario': idUsuario,
+            'senhaAntiga': senhaAntiga,
+            'senhaNova': senhaNova
+        }
+        response = requests.put(API_URL,json=payload)
+        if response.status_code!=200:
+            return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao alterar senha")
+
+    except Exception as e:
+        return template('erro', mensagem="Erro ao se comunicar com o servidor: " + str(e), tipoErro="Erro ao alterar senha")
+    redirect('/usuario')
+
+@usuario_controller.route('/login')
+def telaLogin():
+    return template('login.tpl')
+
+@usuario_controller.route('/usuario/logout')
+def logout():
+    session = request.environ.get('beaker.session')
+    session['usuario'] = None
+    redirect('/login')
+
+
+@usuario_controller.route('/usuario/login', method='POST')
+def login():
+    try:
+        email = request.forms.get('email')
+        senha = request.forms.get('senha')
+
+        API_URL = 'http://localhost:8080/login'
+        
+        payload = {
+            'email': email,
+            'senha': senha
+        }
+        response = requests.post(API_URL,json=payload)
+        if response.status_code!=200:
+            return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Login inválido")
+
+    except Exception as e:
+        return template('erro', mensagem="Erro ao se comunicar com o servidor: " + str(e), tipoErro="Erro ao logar")
+    
+    session = request.environ.get('beaker.session')
+    session['usuario'] = response.json()
+    redirect('/usuario')
+
     

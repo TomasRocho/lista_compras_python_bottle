@@ -1,8 +1,12 @@
 import sqlite3
 from models.Usuario import Usuario
+from util.criptografia import Criptografia
 from services.database import get_connection
 
+
 class Usuario_service:
+    
+    
     def get_all():
         conn = get_connection()
         cur = conn.cursor()
@@ -29,6 +33,20 @@ class Usuario_service:
             return Usuario.from_row(row).to_dict()
         return usuario
     
+    def get_byEmail(email):
+        conn = get_connection()
+        cur = conn.cursor()
+        stringSQL = """
+                    select * from usuario where email = ?
+                    """
+        cur.execute(stringSQL,(email,))
+        row = cur.fetchone()
+        conn.close()
+        usuario = None
+        if row:
+            return Usuario.from_row(row).to_dict()
+        return usuario
+    
     def create(nome,email,senha,dataNascimento):
         conn = get_connection()
         cur = conn.cursor()
@@ -36,6 +54,7 @@ class Usuario_service:
                     insert into usuario (nome,email,senha,dataNascimento) values (?,?,?,?)
                     """
         try:
+            senha = Criptografia.criptografar_string(senha)
             cur.execute(stringSQL,(nome,email,senha,dataNascimento,))
             id = cur.lastrowid
             conn.commit()
@@ -80,7 +99,7 @@ class Usuario_service:
             conn.close()
             return {"erro": "Erro geral do banco de dados ao excluir usuario", "detalhes": str(e)}
         
-    def update(id,nome,email,senha,dataNascimento,administrador):
+    def update(id,nome,email,dataNascimento,administrador):
         conn = get_connection()
         cur = conn.cursor()
         stringSQL = """
@@ -109,4 +128,37 @@ class Usuario_service:
         except sqlite3.Error as e:
             conn.close()
             return {"erro": "Erro geral do banco de dados ao alterar usuario", "detalhes": str(e)}
+        
+        
+    def logar(email,senha):
+        usuarioBd = Usuario_service.get_byEmail(email)
+        if usuarioBd == None:
+            return{"erro": "Email não cadastrado"}
+        if Criptografia.criptografar_string(senha) != usuarioBd.get("senha"):
+            return{"erro": "Senha inválida"}
+        return usuarioBd
+
+    def alterarSenha(idUsuario,senhaAntiga,senhaNova):
+        usuarioBd = Usuario_service.get_byId(idUsuario)
+        if usuarioBd == None:
+            return{"erro": "Id inválido"}
+        #if Criptografia.criptografar_string(senhaAntiga) != usuarioBd.get("senha"):
+        #    return{"erro": "Senha antiga inválida"}
+        if len(senhaNova)<5:
+            return{"erro": "Senha deve possuir no mínimo 5 caracteres"}
+        senhaNova = Criptografia.criptografar_string(senhaNova)
+        conn = get_connection()
+        cur = conn.cursor()
+        stringSQL = """
+                    update usuario set senha = ? where id = ?
+                    """
+        try:
+            cur.execute(stringSQL,(senhaNova,idUsuario,))
+            if cur.rowcount==1:
+                conn.commit()
+                conn.close()
+                return {"id": idUsuario} 
+        except sqlite3.Error as e:
+            conn.close()
+            return {"erro": "Erro geral do banco de dados ao alterar senha", "detalhes": str(e)}
     

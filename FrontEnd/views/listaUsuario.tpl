@@ -34,6 +34,7 @@
                         <td>
                             <a href="/usuario/editar/{{usuario['id']}}">Editar</a>
                             <a href="/usuario/confirmaExclusao/{{usuario['id']}}">Excluir</a>
+                            <a href="/usuario/alterarSenha/{{usuario['id']}}">Alterar senha</a>
                         </td>
                     </tr>
                 % end
