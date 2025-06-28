@@ -6,7 +6,10 @@ base_controller = Bottle()
 def server_static(filepath):
     return static_file(filepath, root='static')
 
-@base_controller.route('/')
+@base_controller.route('/index')
 def index():
     usuario = request.environ.get('beaker.session')['usuario']
     return template('index.tpl',usuario = usuario,mostrarVoltarIndex = False)
+
+
+

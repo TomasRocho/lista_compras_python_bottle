@@ -1,5 +1,8 @@
 %rebase('base.tpl')
-<h1>Lista de Mercados</h1>
+<div class="titulo-com-imagem">
+    <img src="/static/img/mercado.png" alt="Ícone de Mercado">
+    <h1>Lista de Mercados</h1>
+</div>
 <div class="conteudo">
     <a href="/mercado/novo" >Incluir novo mercado</a>
     <p/>

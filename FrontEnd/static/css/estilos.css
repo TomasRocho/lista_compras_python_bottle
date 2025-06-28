@@ -201,4 +201,17 @@ form button {
     color: #b71c1c;
 }
 
+.titulo-com-imagem {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.titulo-com-imagem img {
+    width: 48px;
+    height: 48px;
+}
+
       

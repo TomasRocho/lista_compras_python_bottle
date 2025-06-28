@@ -18,7 +18,7 @@ app.merge(usuario_controller)
 rotas_livres = ['/login', '/usuario/login', '/static/', '/favicon.ico']
 
 # Define rotas que NÃO exigem ser admistrador
-rotas_nao_admin = ['/','/login', '/usuario/login','/usuario/logout', '/static/', '/favicon.ico','/listaCompras','/mercado']
+rotas_nao_admin = ['/index','/login', '/usuario/login','/usuario/logout', '/static/', '/favicon.ico','/listaCompras','/mercado']
 
 # Aplica login_required a todas as rotas, exceto as livres
 for route in app.routes:
@@ -31,6 +31,11 @@ for route in app.routes:
     rota_path = route.rule
     if not any(rota_path.startswith(prefixo) for prefixo in rotas_nao_admin):
         route.callback = admin_required(route.callback)        
+
+@app.route('/')
+@login_required
+def index():
+    redirect('/index')
 
 # Define as propriedades das variavies de sessão
 session_opts = {

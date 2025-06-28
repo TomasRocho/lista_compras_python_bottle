@@ -14,7 +14,7 @@
                 <h1>Lista de Compras Web</h1>
                 <p class="subtitulo_base">Trabalho final - OO | UnB</p>
                 <div style="{{ 'display:none' if not mostrarVoltarIndex else '' }}">
-                    <p class="subtitulo_base"><a href="/">Voltar a Tela Principal</a></p>
+                    <p class="subtitulo_base"><a href="/index">Voltar a Tela Principal</a></p>
                 </div>
             </div>
         </div>

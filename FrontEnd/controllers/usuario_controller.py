@@ -154,6 +154,6 @@ def login():
     
     session = request.environ.get('beaker.session')
     session['usuario'] = response.json()
-    redirect('/')
+    redirect('/index')
 
     
