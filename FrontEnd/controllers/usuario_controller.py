@@ -12,12 +12,13 @@ def listaUsuario():
         response = requests.get(API_URL)
         response.raise_for_status()
         usuarios = response.json() 
-        for usuario in usuarios:
-            usuario["dataNascimento"] = datetime.strptime(usuario["dataNascimento"], "%Y-%m-%d").strftime("%d/%m/%Y")
+        for usr in usuarios:
+            usr["dataNascimento"] = datetime.strptime(usr["dataNascimento"], "%Y-%m-%d").strftime("%d/%m/%Y")
     except requests.RequestException as e:
         usuarios = []
         print(f"Erro ao acessar API: {e}")
-    return template('listaUsuario.tpl',usuarios=usuarios)    
+    usuarioLogado = request.environ.get('beaker.session')['usuario']
+    return template('listaUsuario.tpl',usuarios=usuarios,usuario=usuarioLogado,mostrarVoltarIndex=True)    
 
 @usuario_controller.route('/usuario/novo')
 def novoUsuario():
@@ -29,7 +30,8 @@ def editaUsuario(id):
     response = requests.get(API_URL)
     usuarioRetornado = response.json() 
     usuarioRetornado["dataNascimento"] = datetime.strptime(usuarioRetornado["dataNascimento"], "%Y-%m-%d").strftime("%d/%m/%Y")
-    return template('editaUsuario.tpl',usuario=usuarioRetornado,exibeAdministrador=True,exibeSenha=False) 
+    usuarioLogado = request.environ.get('beaker.session')['usuario']
+    return template('editaUsuario.tpl',usr=usuarioRetornado,exibeAdministrador=True,exibeSenha=False,usuario=usuarioLogado,mostrarVoltarIndex=True) 
 
 @usuario_controller.route('/usuario/salvar', method='POST')
 def salvaUsuario():
@@ -77,7 +79,8 @@ def confirmaExclusaoUsuario(id):
     API_URL = 'http://localhost:8080/usuario/'+id
     response = requests.get(API_URL)
     usuarioRetornado = response.json() 
-    return template('confirmaExclusao.tpl',nomeObjeto='usuario',descricaoObjeto=usuarioRetornado.get('nome'),id=id) 
+    usuario = request.environ.get('beaker.session')['usuario']
+    return template('confirmaExclusao.tpl',nomeObjeto='usuario',descricaoObjeto=usuarioRetornado.get('nome'),id=id,usuario=usuario,mostrarVoltarIndex=True) 
 
 
 
@@ -93,12 +96,10 @@ def excluirUsuario(id):
         return template('erro', mensagem="Erro ao se comunicar com o servidor: " + str(e), tipoErro="Erro ao Excluir Usuario")
     redirect('/usuario')    
 
-@usuario_controller.route('/usuario/alterarSenha/<id>')
-def alteraSenha(id):
-    API_URL = 'http://localhost:8080/usuario/'+id
-    response = requests.get(API_URL)
-    usuarioRetornado = response.json() 
-    return template('alteraSenha.tpl',usuario=usuarioRetornado) 
+@usuario_controller.route('/usuario/alterarSenha')
+def alteraSenha():
+    usuarioLogado = request.environ.get('beaker.session')['usuario']
+    return template('alteraSenha.tpl',usuario=usuarioLogado,mostrarVoltarIndex=True) 
 
 @usuario_controller.route('/usuario/salvarNovaSenha', method='POST')
 def salvaNovaSenha():
@@ -120,7 +121,7 @@ def salvaNovaSenha():
 
     except Exception as e:
         return template('erro', mensagem="Erro ao se comunicar com o servidor: " + str(e), tipoErro="Erro ao alterar senha")
-    redirect('/usuario')
+    redirect('/index')
 
 @usuario_controller.route('/login')
 def telaLogin():

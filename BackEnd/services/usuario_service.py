@@ -142,8 +142,8 @@ class Usuario_service:
         usuarioBd = Usuario_service.get_byId(idUsuario)
         if usuarioBd == None:
             return{"erro": "Id inválido"}
-        #if Criptografia.criptografar_string(senhaAntiga) != usuarioBd.get("senha"):
-        #    return{"erro": "Senha antiga inválida"}
+        if Criptografia.criptografar_string(senhaAntiga) != usuarioBd.get("senha"):
+            return{"erro": "Senha antiga inválida"}
         if len(senhaNova)<5:
             return{"erro": "Senha deve possuir no mínimo 5 caracteres"}
         senhaNova = Criptografia.criptografar_string(senhaNova)

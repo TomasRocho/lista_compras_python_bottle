@@ -15,6 +15,10 @@
         <img src="/static/img/usuario.png" alt="Usuários">
         <span>Usuários</span>
     </a>
+    <a href="/usuario/alterarSenha" class="card-opcao">
+        <img src="/static/img/usuario.png" alt="Usuários">
+        <span>Alterar Senha</span>
+    </a>
     <form action="/usuario/logout" method="post" class="card-opcao  card-logout">
         <button type="submit">
             <img src="/static/img/logout.png" alt="Logout">

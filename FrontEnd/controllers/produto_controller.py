@@ -14,7 +14,8 @@ def listaProduto():
     except requests.RequestException as e:
         produtos = []
         print(f"Erro ao acessar API: {e}")
-    return template('listaProduto.tpl',produtos=produtos)    
+    usuario = request.environ.get('beaker.session')['usuario']
+    return template('listaProduto.tpl',produtos=produtos,usuario=usuario,mostrarVoltarIndex=True)    
 
 @produto_controller.route('/produto/novo')
 def novoProduto():
@@ -26,7 +27,8 @@ def editaProduto(id):
     response = requests.get(API_URL)
     produtoRetornado = response.json() 
     print(produtoRetornado)
-    return template('editaProduto.tpl',produto=produtoRetornado) 
+    usuario = request.environ.get('beaker.session')['usuario']
+    return template('editaProduto.tpl',produto=produtoRetornado,usuario=usuario,mostrarVoltarIndex=True) 
 
 @produto_controller.route('/produto/salvar', method='POST')
 def salvaProduto():
@@ -59,8 +61,8 @@ def confirmaExclusaoProduto(id):
     API_URL = 'http://localhost:8080/produto/'+id
     response = requests.get(API_URL)
     produtoRetornado = response.json() 
-    print(produtoRetornado)
-    return template('confirmaExclusao.tpl',nomeObjeto='produto',descricaoObjeto=produtoRetornado.get('nome'),id=id) 
+    usuario = request.environ.get('beaker.session')['usuario']
+    return template('confirmaExclusao.tpl',nomeObjeto='produto',descricaoObjeto=produtoRetornado.get('nome'),id=id,usuario=usuario,mostrarVoltarIndex=True) 
 
 
 

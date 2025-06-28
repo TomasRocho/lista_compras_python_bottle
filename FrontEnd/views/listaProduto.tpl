@@ -1,38 +1,30 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Produtos</title>
-    <link rel="stylesheet" href="/static/css/estilos.css">
-</head>
-<body>
-
+%rebase('base.tpl')
+<div class="titulo-com-imagem">
+    <img src="/static/img/produto.png" alt="Ícone de Produto">
     <h1>Lista de Produtos</h1>
-    <div class="conteudo">
-        <a href="/produto/novo" >Incluir novo produto</a>
-        <p/>
-        <table>
-            <thead>
+</div>
+<div class="conteudo">
+    <a href="/produto/novo" >Incluir novo produto</a>
+    <p/>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            % for produto in produtos:
                 <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Ações</th>
+                    <td>{{produto['id']}}</td>
+                    <td>{{produto['nome']}}</td>
+                    <td>
+                        <a href="/produto/editar/{{produto['id']}}">Editar</a>
+                        <a href="/produto/confirmaExclusao/{{produto['id']}}">Excluir</a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                % for produto in produtos:
-                    <tr>
-                        <td>{{produto['id']}}</td>
-                        <td>{{produto['nome']}}</td>
-                        <td>
-                            <a href="/produto/editar/{{produto['id']}}">Editar</a>
-                            <a href="/produto/confirmaExclusao/{{produto['id']}}">Excluir</a>
-                        </td>
-                    </tr>
-                % end
-            </tbody>
-        </table>
-    </div>
-</body>
-</html>
+            % end
+        </tbody>
+    </table>
+</div>

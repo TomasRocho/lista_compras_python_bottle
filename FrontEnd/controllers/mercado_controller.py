@@ -26,7 +26,8 @@ def editaMercado(id):
     API_URL = 'http://localhost:8080/mercado/'+id
     response = requests.get(API_URL)
     mercadoRetornado = response.json() 
-    return template('editaMercado.tpl',mercado=mercadoRetornado) 
+    usuario = request.environ.get('beaker.session')['usuario']
+    return template('editaMercado.tpl',mercado=mercadoRetornado,usuario=usuario,mostrarVoltarIndex=True) 
 
 @mercado_controller.route('/mercado/salvar', method='POST')
 def salvaMercado():
@@ -59,7 +60,8 @@ def confirmaExclusaoMercado(id):
     API_URL = 'http://localhost:8080/mercado/'+id
     response = requests.get(API_URL)
     mercadoRetornado = response.json() 
-    return template('confirmaExclusao.tpl',nomeObjeto='mercado',descricaoObjeto=mercadoRetornado.get('nome'),id=id) 
+    usuario = request.environ.get('beaker.session')['usuario']
+    return template('confirmaExclusao.tpl',nomeObjeto='mercado',descricaoObjeto=mercadoRetornado.get('nome'),id=id,usuario=usuario,mostrarVoltarIndex=True) 
 
 
 

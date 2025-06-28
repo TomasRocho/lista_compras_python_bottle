@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Compras</title>
+    <title>Lista de Compras - UnB</title>
     <link rel="stylesheet" href="/static/css/estilos.css">
 </head>
 <body>
@@ -25,7 +25,6 @@
             </form>
         </div>
     </header>
-
     <main class="conteudo">
         {{!base}}
     </main>
