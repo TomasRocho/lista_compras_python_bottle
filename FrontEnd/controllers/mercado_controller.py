@@ -13,7 +13,9 @@ def listaMercado():
     except requests.RequestException as e:
         mercados = []
         print(f"Erro ao acessar API: {e}")
-    return template('listaMercado.tpl',mercados=mercados)    
+
+    usuario = request.environ.get('beaker.session')['usuario']
+    return template('listaMercado.tpl',mercados=mercados,usuario=usuario,mostrarVoltarIndex=True)    
 
 @mercado_controller.route('/mercado/novo')
 def novoMercado():

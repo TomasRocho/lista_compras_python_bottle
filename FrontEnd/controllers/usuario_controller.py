@@ -126,7 +126,7 @@ def salvaNovaSenha():
 def telaLogin():
     return template('login.tpl')
 
-@usuario_controller.route('/usuario/logout')
+@usuario_controller.route('/usuario/logout' , method='POST')
 def logout():
     session = request.environ.get('beaker.session')
     session['usuario'] = None
@@ -154,6 +154,6 @@ def login():
     
     session = request.environ.get('beaker.session')
     session['usuario'] = response.json()
-    redirect('/usuario')
+    redirect('/')
 
     
