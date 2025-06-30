@@ -62,7 +62,7 @@ def confirmaExclusaoProduto(id):
     response = requests.get(API_URL)
     produtoRetornado = response.json() 
     usuario = request.environ.get('beaker.session')['usuario']
-    return template('confirmaExclusao.tpl',nomeObjeto='produto',descricaoObjeto=produtoRetornado.get('nome'),id=id,usuario=usuario,mostrarVoltarIndex=True) 
+    return template('confirmaExclusao.tpl',nomeObjeto='produto',descricaoObjeto=produtoRetornado.get('nome'),id=id,usuario=usuario,mostrarVoltarIndex=True,rotaRetorno='/produto') 
 
 
 

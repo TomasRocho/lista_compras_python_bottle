@@ -22,7 +22,8 @@ def listaUsuario():
 
 @usuario_controller.route('/usuario/novo')
 def novoUsuario():
-    return template('editaUsuario.tpl',usuario=None,exibeAdministrador=False,exibeSenha=True)
+    usuarioLogado = request.environ.get('beaker.session')['usuario']
+    return template('editaUsuario.tpl',usr=None,exibeAdministrador=False,exibeSenha=True,usuario=usuarioLogado,mostrarVoltarIndex=True)
 
 @usuario_controller.route('/usuario/editar/<id>')
 def editaUsuario(id):
@@ -80,7 +81,7 @@ def confirmaExclusaoUsuario(id):
     response = requests.get(API_URL)
     usuarioRetornado = response.json() 
     usuario = request.environ.get('beaker.session')['usuario']
-    return template('confirmaExclusao.tpl',nomeObjeto='usuario',descricaoObjeto=usuarioRetornado.get('nome'),id=id,usuario=usuario,mostrarVoltarIndex=True) 
+    return template('confirmaExclusao.tpl',nomeObjeto='usuario',descricaoObjeto=usuarioRetornado.get('nome'),id=id,usuario=usuario,mostrarVoltarIndex=True,rotaRetorno='/usuario') 
 
 
 

@@ -52,6 +52,7 @@ tbody tr:nth-child(odd) {
 
 form input[type="text"],
 form input[type="password"],
+form select,
 form button {
     display: block;
     margin-bottom: 10px;

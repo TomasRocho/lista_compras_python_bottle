@@ -8,6 +8,6 @@
 <div class="conteudo">
     <form action="/{{nomeObjeto}}/excluir/{{id}}">
         <button type="submit">Sim, excluir</button>
-        <a href="/{{nomeObjeto}}">Cancelar</a>
+        <a href='{{rotaRetorno}}'>Cancelar</a>
     </form>
 </div>

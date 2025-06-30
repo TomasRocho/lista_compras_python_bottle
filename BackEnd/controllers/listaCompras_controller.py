@@ -12,6 +12,12 @@ def get_all():
     response.content_type = 'application/json'
     return json.dumps(listas,ensure_ascii=False)
 
+@listaCompras_controller.get('/listaCompras/getByIdUsuario/<id>')
+def get_byIdUsuario(id):
+    listas = ListaCompras_service.get_byIdUsuario(id)
+    response.content_type = 'application/json'
+    return json.dumps(listas,ensure_ascii=False)
+
 @listaCompras_controller.get('/listaCompras/<id>')
 def get_byId(id):
     listaCompras = ListaCompras_service.get_byId(id)

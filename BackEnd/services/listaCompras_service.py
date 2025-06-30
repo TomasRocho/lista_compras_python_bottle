@@ -8,8 +8,8 @@ class ListaCompras_service:
         cur = conn.cursor()
         stringSQL = """
                     select     lc.*,
-                               us.id as idUsuario, us.nome as nomeUsuario,us.email,us.senha,us.administrador,us.dataNascimento,
-                               me.id as idMercado, me.nome as nomeMercado
+                               us.nome as nomeUsuario,us.email,us.senha,us.administrador,us.dataNascimento,
+                               me.nome as nomeMercado
                     from       listacompras lc 
                                join usuario us 
                                    on us.id=lc.idUsuario 
@@ -22,13 +22,33 @@ class ListaCompras_service:
         listas = [ListaCompras.from_row(row).to_dict() for row in rows]
         return listas
     
+    def get_byIdUsuario(idUsuario):
+        conn = get_connection()
+        cur = conn.cursor()
+        stringSQL = """
+                    select     lc.*,
+                               us.nome as nomeUsuario,us.email,us.senha,us.administrador,us.dataNascimento,
+                               me.nome as nomeMercado
+                    from       listacompras lc 
+                               join usuario us 
+                                   on us.id=lc.idUsuario 
+                               join mercado me 
+                                   on me.id=lc.idMercado
+                    where       us.id = ?
+                    """
+        cur.execute(stringSQL,(idUsuario,))
+        rows = cur.fetchall()
+        conn.close()
+        listas = [ListaCompras.from_row(row).to_dict() for row in rows]
+        return listas
+    
     def get_byId(id):
         conn = get_connection()
         cur = conn.cursor()
         stringSQL = """
                     select     lc.*,
-                               us.id as idUsuario, us.nome as nomeUsuario,us.email,us.senha,us.administrador,us.dataNascimento,
-                               me.id as idMercado, me.nome as nomeMercado
+                               us.nome as nomeUsuario,us.email,us.senha,us.administrador,us.dataNascimento,
+                               me.nome as nomeMercado
                     from       listacompras lc 
                                join usuario us 
                                    on us.id=lc.idUsuario 

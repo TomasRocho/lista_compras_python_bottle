@@ -3,6 +3,8 @@ from controllers.produto_controller import produto_controller
 from controllers.base_controller import base_controller
 from controllers.mercado_controller import mercado_controller
 from controllers.usuario_controller import usuario_controller
+from controllers.listaCompras_controller import listaCompras_controller
+from controllers.itemCompra_controller import itemCompra_controller
 from beaker.middleware import SessionMiddleware
 from middleware.auth import login_required,admin_required
 
@@ -13,6 +15,8 @@ app.merge(base_controller)
 app.merge(produto_controller)
 app.merge(mercado_controller)
 app.merge(usuario_controller)
+app.merge(listaCompras_controller)
+app.merge(itemCompra_controller)
 
 # Define rotas que NÃO exigem login
 rotas_livres = ['/login', '/usuario/login', '/static/', '/favicon.ico']

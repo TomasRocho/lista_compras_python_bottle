@@ -11,10 +11,6 @@ def get_all():
     response.content_type = 'application/json'
     return json.dumps(mercados,ensure_ascii=False)
 
-@mercado_controller.get('/')
-def getHelloWorld():
-    return "hello world"
-
 @mercado_controller.get('/mercado/<id>')
 def get_byId(id):
     mercado = Mercado_service.get_byId(id)
