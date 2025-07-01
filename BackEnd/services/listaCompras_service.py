@@ -35,6 +35,7 @@ class ListaCompras_service:
                                join mercado me 
                                    on me.id=lc.idMercado
                     where       us.id = ?
+                    order by    lc.dataCompra desc
                     """
         cur.execute(stringSQL,(idUsuario,))
         rows = cur.fetchall()
@@ -148,5 +149,23 @@ class ListaCompras_service:
         except sqlite3.Error as e:
             conn.close()
             return {"erro": "Erro geral do banco de dados ao alterar lista", "detalhes": str(e)}
+    
+    def valorTotalLista(id):
+        conn = get_connection()
+        cur = conn.cursor()
+        stringSQL = """
+                    select	idListaCompras ,sum(valorUnitario*quantidade) as valorTotal
+                    from	itemCompra 
+                    where	idListaCompras = ?
+                    group by idListaCompras                                
+                    """
+        cur.execute(stringSQL,(id,))
+        row = cur.fetchone()
+        conn.close()
+        valorTotal = None
+        if row:
+            return {"valorCompra": row['valorTotal']}
+        return valorTotal
+
     
     

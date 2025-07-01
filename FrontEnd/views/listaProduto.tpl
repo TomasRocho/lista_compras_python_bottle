@@ -9,7 +9,6 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Nome</th>
                 <th>Ações</th>
             </tr>
@@ -17,7 +16,6 @@
         <tbody>
             % for produto in produtos:
                 <tr>
-                    <td>{{produto['id']}}</td>
                     <td>{{produto['nome']}}</td>
                     <td>
                         <a href="/produto/editar/{{produto['id']}}">Editar</a>

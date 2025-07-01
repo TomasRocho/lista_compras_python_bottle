@@ -19,7 +19,8 @@ def listaMercado():
 
 @mercado_controller.route('/mercado/novo')
 def novoMercado():
-    return template('editaMercado.tpl',mercado=None)
+    usuario = request.environ.get('beaker.session')['usuario']
+    return template('editaMercado.tpl',mercado=None,usuario=usuario,mostrarVoltarIndex=True)
 
 @mercado_controller.route('/mercado/editar/<id>')
 def editaMercado(id):

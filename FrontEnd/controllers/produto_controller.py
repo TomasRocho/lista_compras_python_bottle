@@ -19,7 +19,8 @@ def listaProduto():
 
 @produto_controller.route('/produto/novo')
 def novoProduto():
-    return template('editaProduto.tpl',produto=None)
+    usuario = request.environ.get('beaker.session')['usuario']
+    return template('editaProduto.tpl',produto=None,usuario=usuario,mostrarVoltarIndex=True)
 
 @produto_controller.route('/produto/editar/<id>')
 def editaProduto(id):

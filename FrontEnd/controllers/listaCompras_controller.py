@@ -1,6 +1,7 @@
 from bottle import Bottle, template, request, redirect
 import requests
 from datetime import datetime
+from datetime import date
 
 
 listaCompras_controller = Bottle()
@@ -29,7 +30,8 @@ def novaLista():
     response.raise_for_status()
     mercados = response.json() 
     usuarioLogado = request.environ.get('beaker.session')['usuario']
-    return template('editaCompras.tpl',listaCompras=None,usuario=usuarioLogado,mostrarVoltarIndex=True, mercados=mercados)
+    dataHoje = date.today().strftime("%d/%m/%Y")
+    return template('editaCompras.tpl',listaCompras=None,usuario=usuarioLogado,mostrarVoltarIndex=True, mercados=mercados,dataHoje=dataHoje)
 
 @listaCompras_controller.route('/listaCompras/editar/<id>')
 def editaListaCompras(id):
@@ -42,7 +44,7 @@ def editaListaCompras(id):
     response.raise_for_status()
     mercados = response.json() 
     usuarioLogado = request.environ.get('beaker.session')['usuario']
-    return template('editaCompras.tpl',listaCompras=listaRetornada,usuario=usuarioLogado,mostrarVoltarIndex=True, mercados=mercados) 
+    return template('editaCompras.tpl',listaCompras=listaRetornada,usuario=usuarioLogado,mostrarVoltarIndex=True, mercados=mercados,dataHoje=None) 
 
 @listaCompras_controller.route('/listaCompras/salvar', method='POST')
 def salvaCompras():

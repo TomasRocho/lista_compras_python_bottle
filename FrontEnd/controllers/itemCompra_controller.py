@@ -1,6 +1,7 @@
 from bottle import Bottle, template, request, redirect
 import requests
 from datetime import datetime
+import locale
 
 
 itemCompra_controller = Bottle()
@@ -14,24 +15,49 @@ def listaItensCompra(idListaCompras):
         response = requests.get(API_URL)
         response.raise_for_status()
         itens = response.json() 
+
+        API_URL_listaCompra = 'http://localhost:8080/listaCompras/' + idListaCompras
+        response = requests.get(API_URL_listaCompra)
+        response.raise_for_status()
+        listaCompra = response.json() 
+
+        API_URL_valorTotal = 'http://localhost:8080/listaCompras/valorTotal/' + idListaCompras
+        response = requests.get(API_URL_valorTotal)
+        response.raise_for_status()
+        valorTotal = response.json()
+        total = 0
+        if valorTotal:
+            total = valorTotal['valorCompra']
+        locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+        valor_formatado = locale.currency(total, grouping=True)
+
+
     except requests.RequestException as e:
         itens = []
         print(f"Erro ao acessar API: {e}")
     
-    return template('listaItemCompra.tpl',itens=itens,idListaCompras= idListaCompras,usuario=usuarioLogado,mostrarVoltarIndex=True)    
+    return template('listaItemCompra.tpl',itens=itens,idListaCompras= idListaCompras,
+                    usuario=usuarioLogado,mostrarVoltarIndex=True, 
+                    listaCompra = listaCompra, valorTotal = valor_formatado)    
 
 @itemCompra_controller.route('/itemCompra/novo/<idListaCompras>')
 def novoItem(idListaCompras):
+    API_URL_produtos = 'http://localhost:8080/produto'
+    response = requests.get(API_URL_produtos)
+    produtos = response.json() 
     usuarioLogado = request.environ.get('beaker.session')['usuario']
-    return template('editaItemCompra.tpl',itemCompra=None,usuario=usuarioLogado,mostrarVoltarIndex=True, idListaCompras=idListaCompras)
+    return template('editaItemCompra.tpl',itemCompra=None,usuario=usuarioLogado,mostrarVoltarIndex=True, idListaCompras=idListaCompras,produtos=produtos)
 
 @itemCompra_controller.route('/itemCompra/editar/<id>')
 def editaItem(id):
+    API_URL_produtos = 'http://localhost:8080/produto'
+    response = requests.get(API_URL_produtos)
+    produtos = response.json() 
     API_URL = 'http://localhost:8080/itemCompra/'+id
     response = requests.get(API_URL)
     item = response.json() 
     usuarioLogado = request.environ.get('beaker.session')['usuario']
-    return template('editaItemCompra.tpl',itemCompra=item,usuario=usuarioLogado,mostrarVoltarIndex=True, idListaCompras=item['listaCompras']['id'])
+    return template('editaItemCompra.tpl',itemCompra=item,usuario=usuarioLogado,mostrarVoltarIndex=True, idListaCompras=item['listaCompras']['id'],produtos=produtos)
 
 @itemCompra_controller.route('/itemCompra/salvar', method='POST')
 def salvaItem():
@@ -40,7 +66,7 @@ def salvaItem():
         valorUnitario = request.forms.get('valorUnitario')
         quantidade = request.forms.get('quantidade')
         idListaCompras = request.forms.get('idListaCompras')
-        idProduto = request.forms.get('idProduto')
+        idProduto = request.forms.get('produto')
 
 
         API_URL = 'http://localhost:8080/itemCompra'

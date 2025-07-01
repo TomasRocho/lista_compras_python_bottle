@@ -18,6 +18,12 @@ def get_byIdUsuario(id):
     response.content_type = 'application/json'
     return json.dumps(listas,ensure_ascii=False)
 
+@listaCompras_controller.get('/listaCompras/valorTotal/<id>')
+def get_valorTotal(id):
+    valorTotal = ListaCompras_service.valorTotalLista(id)
+    response.content_type = 'application/json'
+    return json.dumps(valorTotal,ensure_ascii=False)
+
 @listaCompras_controller.get('/listaCompras/<id>')
 def get_byId(id):
     listaCompras = ListaCompras_service.get_byId(id)

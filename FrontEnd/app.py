@@ -22,7 +22,7 @@ app.merge(itemCompra_controller)
 rotas_livres = ['/login', '/usuario/login', '/static/', '/favicon.ico']
 
 # Define rotas que NÃO exigem ser admistrador
-rotas_nao_admin = ['/index','/login', '/usuario/login','/usuario/logout', '/static/', '/favicon.ico','/listaCompras','/mercado']
+rotas_nao_admin = ['/index','/login', '/usuario/login','/usuario/logout','/usuario/alterarSenha', '/static/', '/favicon.ico','/listaCompras','/itemCompra']
 
 # Aplica login_required a todas as rotas, exceto as livres
 for route in app.routes:

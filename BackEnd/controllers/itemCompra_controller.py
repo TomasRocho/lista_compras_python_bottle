@@ -78,3 +78,10 @@ def update():
     if "erro" in itemCompra:
         response.status = 500
     return itemCompra
+
+@itemCompra_controller.get('/itemCompra/valorMedio/<idProduto>')
+def get_valorMedio(idProduto):
+    valorTotal = ItemCompra_service.valorMedioProduto(idProduto)
+    response.content_type = 'application/json'
+    response.set_header('Access-Control-Allow-Origin', '*')
+    return json.dumps(valorTotal,ensure_ascii=False)

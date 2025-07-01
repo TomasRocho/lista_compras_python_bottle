@@ -10,7 +10,6 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Nome</th>
                 <th>e-mail</th>
                 <th>Data Nascimento</th>
@@ -21,7 +20,6 @@
         <tbody>
             % for usr in usuarios:
                 <tr>
-                    <td>{{usr['id']}}</td>
                     <td>{{usr['nome']}}</td>
                     <td>{{usr['email']}}</td>
                     <td>{{usr['dataNascimento']}}</td>

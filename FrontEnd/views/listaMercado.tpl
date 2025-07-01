@@ -9,7 +9,6 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Nome</th>
                 <th>Ações</th>
             </tr>
@@ -17,7 +16,6 @@
         <tbody>
             % for mercado in mercados:
                 <tr>
-                    <td>{{mercado['id']}}</td>
                     <td>{{mercado['nome']}}</td>
                     <td>
                         <a href="/mercado/editar/{{mercado['id']}}">Editar</a>

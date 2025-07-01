@@ -46,7 +46,8 @@ class ItemCompra_service:
                                 on m.id =lc.idMercado
                             join usuario u 
                                 on u.id =lc.idUsuario
-                    where   lc.id = ?                                
+                    where   lc.id = ?   
+                    order by  p.nome                             
                     """
         cur.execute(stringSQL,(id,))
         rows = cur.fetchall()
@@ -165,4 +166,22 @@ class ItemCompra_service:
         except sqlite3.Error as e:
             conn.close()
             return {"erro": "Erro geral do banco de dados ao alterar item", "detalhes": str(e)}
+        
+    def valorMedioProduto(idProduto):
+        conn = get_connection()
+        cur = conn.cursor()
+        stringSQL = """
+                    select	idProduto,avg(valorUnitario) as valorMedio
+                    from 	itemCompra 
+                    where	idProduto = ?
+                            and valorUnitario <>0
+                    group by idProduto                               
+                    """
+        cur.execute(stringSQL,(idProduto,))
+        row = cur.fetchone()
+        conn.close()
+        valorMedio = None
+        if row:
+            return {"valorMedio": row['valorMedio']}
+        return valorMedio
     

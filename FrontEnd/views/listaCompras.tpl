@@ -1,6 +1,6 @@
 %rebase('base.tpl')
 <div class="titulo-com-imagem">
-    <img src="/static/img/usuario.png" alt="Ícone de Lista de Compras">
+    <img src="/static/img/listaCompra.png" alt="Ícone de Lista de Compras">
     <h1>Lista de Compras</h1>
 </div>
 <h1>Lista de Compras</h1>
@@ -10,7 +10,6 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Nome</th>
                 <th>Mercado</th>
                 <th>Data da Compra</th>
@@ -20,8 +19,7 @@
         <tbody>
             % for lista in listas:
                 <tr>
-                    <td>{{lista['id']}}</td>
-                    <td>{{lista['nome']}}</td>
+                    <td><a href="/itemCompra/{{lista['id']}}">{{lista['nome']}}</a></td>
                     <td>{{lista['mercado']['nome']}}</td>
                     <td>{{lista['dataCompra']}}</td>
                     <td>
