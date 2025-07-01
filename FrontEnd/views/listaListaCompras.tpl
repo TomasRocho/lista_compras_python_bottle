@@ -1,6 +1,6 @@
 %rebase('base.tpl')
 <div class="titulo-com-imagem">
-    <img src="/static/img/listaCompra.png" alt="Ícone de Lista de Compras">
+    <img src="/static/img/listaCompras.png" alt="Ícone de Lista de Compras">
     <h1>Lista de Compras</h1>
 </div>
 <h1>Lista de Compras</h1>

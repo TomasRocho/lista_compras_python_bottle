@@ -21,7 +21,7 @@ def listaListasCompras():
         listas = []
         print(f"Erro ao acessar API: {e}")
     
-    return template('listaCompras.tpl',listas=listas,usuario=usuarioLogado,mostrarVoltarIndex=True)    
+    return template('listaListaCompras.tpl',listas=listas,usuario=usuarioLogado,mostrarVoltarIndex=True)    
 
 @listaCompras_controller.route('/listaCompras/novo')
 def novaLista():
@@ -31,7 +31,7 @@ def novaLista():
     mercados = response.json() 
     usuarioLogado = request.environ.get('beaker.session')['usuario']
     dataHoje = date.today().strftime("%d/%m/%Y")
-    return template('editaCompras.tpl',listaCompras=None,usuario=usuarioLogado,mostrarVoltarIndex=True, mercados=mercados,dataHoje=dataHoje)
+    return template('editaListaCompras.tpl',listaCompras=None,usuario=usuarioLogado,mostrarVoltarIndex=True, mercados=mercados,dataHoje=dataHoje)
 
 @listaCompras_controller.route('/listaCompras/editar/<id>')
 def editaListaCompras(id):
@@ -44,7 +44,7 @@ def editaListaCompras(id):
     response.raise_for_status()
     mercados = response.json() 
     usuarioLogado = request.environ.get('beaker.session')['usuario']
-    return template('editaCompras.tpl',listaCompras=listaRetornada,usuario=usuarioLogado,mostrarVoltarIndex=True, mercados=mercados,dataHoje=None) 
+    return template('editaListaCompras.tpl',listaCompras=listaRetornada,usuario=usuarioLogado,mostrarVoltarIndex=True, mercados=mercados,dataHoje=None) 
 
 @listaCompras_controller.route('/listaCompras/salvar', method='POST')
 def salvaCompras():

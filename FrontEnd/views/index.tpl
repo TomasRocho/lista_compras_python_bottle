@@ -4,7 +4,7 @@
 
 <div class="grid-opcoes">
     <a href="/listaCompras" class="card-opcao">
-        <img src="/static/img/listaCompra.png" alt="Listas de Compras">
+        <img src="/static/img/listaCompras.png" alt="Listas de Compras">
         <span>Listas de Compras</span>
     </a>
     <a href="/produto" class="card-opcao">

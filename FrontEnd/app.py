@@ -1,4 +1,4 @@
-from bottle import Bottle, run, route, redirect, HTTPResponse
+from bottle import Bottle, run, route, redirect
 from controllers.produto_controller import produto_controller
 from controllers.base_controller import base_controller
 from controllers.mercado_controller import mercado_controller
@@ -7,8 +7,6 @@ from controllers.listaCompras_controller import listaCompras_controller
 from controllers.itemCompra_controller import itemCompra_controller
 from beaker.middleware import SessionMiddleware
 from middleware.auth import login_required,admin_required
-
-
 
 app = Bottle()
 app.merge(base_controller)
@@ -36,6 +34,7 @@ for route in app.routes:
     if not any(rota_path.startswith(prefixo) for prefixo in rotas_nao_admin):
         route.callback = admin_required(route.callback)        
 
+# define a rota raiz, redirecionando para /index
 @app.route('/')
 @login_required
 def index():
@@ -52,7 +51,10 @@ session_opts = {
 #A biblioteca abaixo permite que o Bottle armazene variáveis de sessão para compartilhar por toda a aplicação
 application = SessionMiddleware(app, session_opts)
 
+HOST = "localhost"
+PORTA = 8081
+
 
 if __name__ == '__main__':
-    run(application,host='localhost',port=8081, debug=True,reloader=True)
+    run(application,host=HOST,port=PORTA, debug=True,reloader=True)
     
