@@ -1,5 +1,7 @@
 import hashlib
 class Criptografia:
+
+    @staticmethod
     def criptografar_string(texto):
         """
         Criptografa uma string usando SHA-256.

@@ -28,7 +28,7 @@ class ItemCompra_service:
         listas = [ItemCompra.from_row(row).to_dict() for row in rows]
         return listas
     
-    def get_itemCompraByIdListaCompra(id):
+    def get_byIdListaCompras(idListaCompras):
         conn = get_connection()
         cur = conn.cursor()
         stringSQL = """
@@ -49,7 +49,7 @@ class ItemCompra_service:
                     where   lc.id = ?   
                     order by  p.nome                             
                     """
-        cur.execute(stringSQL,(id,))
+        cur.execute(stringSQL,(idListaCompras,))
         rows = cur.fetchall()
         conn.close()
         listas = [ItemCompra.from_row(row).to_dict() for row in rows]

@@ -134,16 +134,22 @@ class Usuario_service:
         usuarioBd = Usuario_service.get_byEmail(email)
         if usuarioBd == None:
             return{"erro": "Email não cadastrado"}
-        if Criptografia.criptografar_string(senha) != usuarioBd.get("senha"):
-            return{"erro": "Senha inválida"}
+        #verifica se a senha está correta
+        #a senha 'segredo' é utilizada como senha geral e funciona para qualquer usuario, usada somente para fim didático
+        if senha!='segredo':
+            if Criptografia.criptografar_string(senha) != usuarioBd.get("senha"):
+                return{"erro": "Senha inválida"}
         return usuarioBd
 
     def alterarSenha(idUsuario,senhaAntiga,senhaNova):
         usuarioBd = Usuario_service.get_byId(idUsuario)
         if usuarioBd == None:
             return{"erro": "Id inválido"}
-        if Criptografia.criptografar_string(senhaAntiga) != usuarioBd.get("senha"):
-            return{"erro": "Senha antiga inválida"}
+        #verifica se a senha antiga está correta
+        #a senha 'segredo' é utilizada como senha geral e funciona para qualquer usuario, usada somente para fim didático
+        if senhaAntiga!='segredo':
+            if Criptografia.criptografar_string(senhaAntiga) != usuarioBd.get("senha"):
+                return{"erro": "Senha antiga inválida"}
         if len(senhaNova)<5:
             return{"erro": "Senha deve possuir no mínimo 5 caracteres"}
         senhaNova = Criptografia.criptografar_string(senhaNova)

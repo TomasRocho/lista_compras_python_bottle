@@ -31,7 +31,7 @@ def get_byId(id):
         response.status=404
         return {"erro":"ListaCompras Inexistente"}
     
-    listaItensCompra = ItemCompra_service.get_itemCompraByIdListaCompra(id)
+    listaItensCompra = ItemCompra_service.get_byIdListaCompras(id)
     listaCompras["listaItemCompra"] = listaItensCompra
     
     response.content_type = 'application/json'

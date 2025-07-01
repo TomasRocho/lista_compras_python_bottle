@@ -3,7 +3,7 @@
     <img src="/static/img/itemCompra.png" alt="Ícone de Itens da Compra">
     <h1>Itens da Compra</h1>
 </div>
-<h1>{{listaCompra['nome']}} no mercado {{listaCompra['mercado']['nome']}}</h1>
+<h1>{{listaCompras['nome']}} no mercado {{listaCompras['mercado']['nome']}}</h1>
 <h2>Valor total da compra: {{valorTotal}}</h2>
 <div class="conteudo">
     <a href="/itemCompra/novo/{{idListaCompras}}" >Incluir novo item</a>
@@ -42,11 +42,11 @@ function mostrarValorMedio(idProduto,nomeProduto) {
         .then(response => response.json())
         .then(data => {
             valorMedio = 0
-            if (data){
+            totalFormatado = " não possui histórico"
+            if (data && data.valorMedio!=0){
                 valorMedio = data.valorMedio
+                totalFormatado = valorMedio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
             }
-            const totalFormatado = valorMedio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-            //alert(`Valor médio do ${nomeProduto}: ${totalFormatado}`);
             Swal.fire({
                 title: 'Valor Médio',
                 text: `Valor médio do ${nomeProduto}: ${totalFormatado}`,

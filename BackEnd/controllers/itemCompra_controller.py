@@ -11,9 +11,9 @@ def get_all():
     response.content_type = 'application/json'
     return json.dumps(itens,ensure_ascii=False)
 
-@itemCompra_controller.get('/itemCompra/listaCompra/<id>')
-def get_itemCompraByIdListaCompra(id):
-    itens = ItemCompra_service.get_itemCompraByIdListaCompra(id)
+@itemCompra_controller.get('/itemCompra/listaCompras/<id>')
+def get_byIdListaCompras(id):
+    itens = ItemCompra_service.get_byIdListaCompras(id)
     response.content_type = 'application/json'
     return json.dumps(itens,ensure_ascii=False)
 

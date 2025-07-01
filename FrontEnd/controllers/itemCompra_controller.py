@@ -11,15 +11,15 @@ def listaItensCompra(idListaCompras):
     usuarioLogado = request.environ.get('beaker.session')['usuario']
     try:
 
-        API_URL = 'http://localhost:8080/itemCompra/listaCompra/' + idListaCompras
+        API_URL = 'http://localhost:8080/itemCompra/listaCompras/' + idListaCompras
         response = requests.get(API_URL)
         response.raise_for_status()
         itens = response.json() 
 
-        API_URL_listaCompra = 'http://localhost:8080/listaCompras/' + idListaCompras
-        response = requests.get(API_URL_listaCompra)
+        API_URL_listaCompras = 'http://localhost:8080/listaCompras/' + idListaCompras
+        response = requests.get(API_URL_listaCompras)
         response.raise_for_status()
-        listaCompra = response.json() 
+        listaCompras = response.json() 
 
         API_URL_valorTotal = 'http://localhost:8080/listaCompras/valorTotal/' + idListaCompras
         response = requests.get(API_URL_valorTotal)
@@ -38,7 +38,7 @@ def listaItensCompra(idListaCompras):
     
     return template('listaItemCompra.tpl',itens=itens,idListaCompras= idListaCompras,
                     usuario=usuarioLogado,mostrarVoltarIndex=True, 
-                    listaCompra = listaCompra, valorTotal = valor_formatado)    
+                    listaCompras = listaCompras, valorTotal = valor_formatado)    
 
 @itemCompra_controller.route('/itemCompra/novo/<idListaCompras>')
 def novoItem(idListaCompras):
