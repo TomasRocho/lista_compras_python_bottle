@@ -1,5 +1,4 @@
 from bottle import Bottle,  response, request
-from models.ItemCompra import ItemCompra
 from services.itemCompra_service import ItemCompra_service
 import json
 

@@ -1,5 +1,4 @@
 from bottle import Bottle, response, request
-from models.Usuario import Usuario
 from services.usuario_service import Usuario_service
 import json
 

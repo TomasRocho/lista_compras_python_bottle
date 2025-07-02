@@ -10,6 +10,8 @@ from middleware.auth import login_required,admin_required
 from config.constantes import HOST, PORTA
 
 app = Bottle()
+
+#importa todas as rotas criadas nos controllers
 app.merge(base_controller)
 app.merge(produto_controller)
 app.merge(mercado_controller)

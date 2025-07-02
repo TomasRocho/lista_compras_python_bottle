@@ -61,8 +61,10 @@ def salvaCompras():
         nome = request.forms.getunicode('nome')
         id = request.forms.get('id')
         dataCompra = request.forms.get('dataCompra')
+
         #formata o campo data para o formato "yyyy-mm-aa" para ser enviado ao backend
         dataCompra = datetime.strptime(dataCompra, "%d/%m/%Y").strftime("%Y-%m-%d")
+        
         idMercado = request.forms.get('mercado')
         idUsuario = request.forms.get('idUsuario')
         payload = {

@@ -1,5 +1,4 @@
 from bottle import Bottle,  response, request
-from models.Produto import Produto
 from services.produto_service import Produto_service
 import json
 
