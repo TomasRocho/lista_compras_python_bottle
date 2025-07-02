@@ -1,7 +1,7 @@
 from bottle import Bottle, template, request, redirect
 import requests
-from datetime import datetime
 import locale
+from config.constantes import HOST_API, PORTA_API
 
 
 itemCompra_controller = Bottle()
@@ -11,18 +11,21 @@ def listaItensCompra(idListaCompras):
     usuarioLogado = request.environ.get('beaker.session')['usuario']
     try:
 
-        API_URL = 'http://localhost:8080/itemCompra/listaCompras/' + idListaCompras
-        response = requests.get(API_URL)
+        #carrega todos os itens de uma determinada lista
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/itemCompra/listaCompras/{idListaCompras}'
+        response = requests.get(chamadaAPI)
         response.raise_for_status()
         itens = response.json() 
 
-        API_URL_listaCompras = 'http://localhost:8080/listaCompras/' + idListaCompras
-        response = requests.get(API_URL_listaCompras)
+        #carrega todos os dados de uma lista para exibir no template
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/listaCompras/{idListaCompras}'
+        response = requests.get(chamadaAPI)
         response.raise_for_status()
         listaCompras = response.json() 
 
-        API_URL_valorTotal = 'http://localhost:8080/listaCompras/valorTotal/' + idListaCompras
-        response = requests.get(API_URL_valorTotal)
+        #retorna o valor total de uma lista de compras
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/listaCompras/valorTotal/{idListaCompras}'
+        response = requests.get(chamadaAPI)
         response.raise_for_status()
         valorTotal = response.json()
         total = 0
@@ -42,19 +45,24 @@ def listaItensCompra(idListaCompras):
 
 @itemCompra_controller.route('/itemCompra/novo/<idListaCompras>')
 def novoItem(idListaCompras):
-    API_URL_produtos = 'http://localhost:8080/produto'
-    response = requests.get(API_URL_produtos)
+    #carrega a lista de produtos para preencher o <SELECT> do template de edição
+    chamadaAPI = f'http://{HOST_API}:{PORTA_API}/produto'
+    response = requests.get(chamadaAPI)
     produtos = response.json() 
     usuarioLogado = request.environ.get('beaker.session')['usuario']
     return template('editaItemCompra.tpl',itemCompra=None,usuario=usuarioLogado,mostrarVoltarIndex=True, idListaCompras=idListaCompras,produtos=produtos)
 
 @itemCompra_controller.route('/itemCompra/editar/<id>')
 def editaItem(id):
-    API_URL_produtos = 'http://localhost:8080/produto'
-    response = requests.get(API_URL_produtos)
+    
+    #carrega a lista de produtos para preencher o <SELECT> do template de edição
+    chamadaAPI = f'http://{HOST_API}:{PORTA_API}/produto'
+    response = requests.get(chamadaAPI)
     produtos = response.json() 
-    API_URL = 'http://localhost:8080/itemCompra/'+id
-    response = requests.get(API_URL)
+
+    #carrega um item completo para o template de edição
+    chamadaAPI = f'http://{HOST_API}:{PORTA_API}/itemCompra/{id}'
+    response = requests.get(chamadaAPI)
     item = response.json() 
     usuarioLogado = request.environ.get('beaker.session')['usuario']
     return template('editaItemCompra.tpl',itemCompra=item,usuario=usuarioLogado,mostrarVoltarIndex=True, idListaCompras=item['listaCompras']['id'],produtos=produtos)
@@ -67,41 +75,35 @@ def salvaItem():
         quantidade = request.forms.get('quantidade')
         idListaCompras = request.forms.get('idListaCompras')
         idProduto = request.forms.get('produto')
-
-
-        API_URL = 'http://localhost:8080/itemCompra'
-        #inclusao
-        if id=='':
-            payload = {
-                'idProduto': idProduto,
-                'valorUnitario': valorUnitario,
-                'quantidade': quantidade,
-                'idListaCompras': idListaCompras
-            }
-            response = requests.post(API_URL,json=payload)
-            if response.status_code!=201:
-                return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Salvar Item")
-        #alteracao    
-        else:
-            payload = {
+        payload = {
                 'id': id,
                 'idProduto': idProduto,
                 'valorUnitario': valorUnitario,
                 'quantidade': quantidade,
                 'idListaCompras': idListaCompras
             }
-            response = requests.put(API_URL,json=payload)
+
+
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/itemCompra'
+        #inclusao
+        if id=='':
+            response = requests.post(chamadaAPI,json=payload)
+            if response.status_code!=201:
+                return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Salvar Item")
+        #alteracao    
+        else:
+            response = requests.put(chamadaAPI,json=payload)
             if response.status_code!=200:
                 return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Salvar Item")
 
     except Exception as e:
         return template('erro', mensagem="Erro ao se comunicar com o servidor: " + str(e), tipoErro="Erro ao Salvar Item")
-    redirect("/itemCompra/" + idListaCompras)
+    redirect(f"/itemCompra/{idListaCompras}")
 
 @itemCompra_controller.route('/itemCompra/confirmaExclusao/<id>')
 def confirmaExclusaoItem(id):
-    API_URL = 'http://localhost:8080/itemCompra/'+id
-    response = requests.get(API_URL)
+    chamadaAPI = f'http://{HOST_API}:{PORTA_API}/itemCompra/{id}'
+    response = requests.get(chamadaAPI)
     item = response.json() 
     usuario = request.environ.get('beaker.session')['usuario']
     return template('confirmaExclusao.tpl',nomeObjeto='itemCompra',descricaoObjeto=item.get('produto').get('nome'),id=id,usuario=usuario,mostrarVoltarIndex=True,rotaRetorno='/itemCompra/'+str(item['listaCompras']['id'])) 
@@ -111,17 +113,19 @@ def confirmaExclusaoItem(id):
 @itemCompra_controller.route('/itemCompra/excluir/<id>')
 def excluirItem(id):
     try:
-        API_URL_GET = 'http://localhost:8080/itemCompra/'+id
-        response = requests.get(API_URL_GET)
+        #retorna o id da lista de compras para poder fazer o redirect no final da função
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/itemCompra/{id}'
+        response = requests.get(chamadaAPI)
         item = response.json() 
         idLista = item['listaCompras']['id']
-        API_URL = 'http://localhost:8080/itemCompra/' + id
-        response = requests.delete(API_URL)
+
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/itemCompra/{id}'
+        response = requests.delete(chamadaAPI)
         if response.status_code!=200:
                 return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Excluir Item")
     except Exception as e:
         return template('erro', mensagem="Erro ao se comunicar com o servidor: " + str(e), tipoErro="Erro ao Excluir Item")
-    redirect('/itemCompra/' + str(idLista))    
+    redirect(f'/itemCompra/{idLista}')    
 
 
 

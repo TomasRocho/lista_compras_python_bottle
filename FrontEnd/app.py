@@ -7,6 +7,7 @@ from controllers.listaCompras_controller import listaCompras_controller
 from controllers.itemCompra_controller import itemCompra_controller
 from beaker.middleware import SessionMiddleware
 from middleware.auth import login_required,admin_required
+from config.constantes import HOST, PORTA
 
 app = Bottle()
 app.merge(base_controller)
@@ -50,9 +51,6 @@ session_opts = {
 
 #A biblioteca abaixo permite que o Bottle armazene variáveis de sessão para compartilhar por toda a aplicação
 application = SessionMiddleware(app, session_opts)
-
-HOST = "localhost"
-PORTA = 8081
 
 
 if __name__ == '__main__':

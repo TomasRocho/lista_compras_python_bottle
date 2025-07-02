@@ -1,13 +1,14 @@
 from bottle import Bottle, template, request, redirect
 import requests
+from config.constantes import HOST_API, PORTA_API
 
 mercado_controller = Bottle()
 
 @mercado_controller.route('/mercado')
 def listaMercado():
     try:
-        API_URL = 'http://localhost:8080/mercado'
-        response = requests.get(API_URL)
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/mercado'
+        response = requests.get(chamadaAPI)
         response.raise_for_status()
         mercados = response.json() 
     except requests.RequestException as e:
@@ -24,8 +25,8 @@ def novoMercado():
 
 @mercado_controller.route('/mercado/editar/<id>')
 def editaMercado(id):
-    API_URL = 'http://localhost:8080/mercado/'+id
-    response = requests.get(API_URL)
+    chamadaAPI = f'http://{HOST_API}:{PORTA_API}/mercado/{id}'
+    response = requests.get(chamadaAPI)
     mercadoRetornado = response.json() 
     usuario = request.environ.get('beaker.session')['usuario']
     return template('editaMercado.tpl',mercado=mercadoRetornado,usuario=usuario,mostrarVoltarIndex=True) 
@@ -35,20 +36,19 @@ def salvaMercado():
     try:
         nome = request.forms.getunicode('nome')
         id = request.forms.get('id')
-        API_URL = 'http://localhost:8080/mercado'
+        payload = {
+                    'id': id,
+                    'nome': nome
+                }
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/mercado'
+        #INCLUSÃO
         if id=='':
-            payload = {
-                'nome': nome
-            }
-            response = requests.post(API_URL,json=payload)
+            response = requests.post(chamadaAPI,json=payload)
             if response.status_code!=201:
                 return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Salvar Mercado")
+        #ALTERAÇÃO
         else:
-            payload = {
-                'id': id,
-                'nome': nome
-            }
-            response = requests.put(API_URL,json=payload)
+            response = requests.put(chamadaAPI,json=payload)
             if response.status_code!=200:
                 return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Salvar Mercado")
 
@@ -58,8 +58,8 @@ def salvaMercado():
 
 @mercado_controller.route('/mercado/confirmaExclusao/<id>')
 def confirmaExclusaoMercado(id):
-    API_URL = 'http://localhost:8080/mercado/'+id
-    response = requests.get(API_URL)
+    chamadaAPI = f'http://{HOST_API}:{PORTA_API}/mercado/{id}'
+    response = requests.get(chamadaAPI)
     mercadoRetornado = response.json() 
     usuario = request.environ.get('beaker.session')['usuario']
     return template('confirmaExclusao.tpl',nomeObjeto='mercado',descricaoObjeto=mercadoRetornado.get('nome'),id=id,usuario=usuario,mostrarVoltarIndex=True,rotaRetorno='/mercado') 
@@ -69,9 +69,8 @@ def confirmaExclusaoMercado(id):
 @mercado_controller.route('/mercado/excluir/<id>')
 def excluirMercado(id):
     try:
-        API_URL = 'http://localhost:8080/mercado/' + id
-        print(API_URL)
-        response = requests.delete(API_URL)
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/mercado/{id}'
+        response = requests.delete(chamadaAPI)
         if response.status_code!=200:
                 return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Excluir Mercado")
     except Exception as e:

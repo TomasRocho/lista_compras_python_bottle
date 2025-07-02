@@ -1,14 +1,14 @@
 from bottle import Bottle, template, request, redirect
 import requests
-from middleware.auth import admin_required
+from config.constantes import HOST_API, PORTA_API
 
 produto_controller = Bottle()
 
 @produto_controller.route('/produto')
 def listaProduto():
     try:
-        API_URL = 'http://localhost:8080/produto'
-        response = requests.get(API_URL)
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/produto'
+        response = requests.get(chamadaAPI)
         response.raise_for_status()
         produtos = response.json() 
     except requests.RequestException as e:
@@ -24,8 +24,8 @@ def novoProduto():
 
 @produto_controller.route('/produto/editar/<id>')
 def editaProduto(id):
-    API_URL = 'http://localhost:8080/produto/'+id
-    response = requests.get(API_URL)
+    chamadaAPI = f'http://{HOST_API}:{PORTA_API}/produto/{id}'
+    response = requests.get(chamadaAPI)
     produtoRetornado = response.json() 
     print(produtoRetornado)
     usuario = request.environ.get('beaker.session')['usuario']
@@ -36,20 +36,19 @@ def salvaProduto():
     try:
         nome = request.forms.getunicode('nome')
         id = request.forms.get('id')
-        API_URL = 'http://localhost:8080/produto'
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/produto'
+        payload = {
+            'id': id,
+            'nome': nome
+        }
+        #INCLUSÃO
         if id=='':
-            payload = {
-                'nome': nome
-            }
-            response = requests.post(API_URL,json=payload)
+            response = requests.post(chamadaAPI,json=payload)
             if response.status_code!=201:
                 return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Salvar Produto")
+        #ALTERAÇÃO
         else:
-            payload = {
-                'id': id,
-                'nome': nome
-            }
-            response = requests.put(API_URL,json=payload)
+            response = requests.put(chamadaAPI,json=payload)
             if response.status_code!=200:
                 return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Salvar Produto")
 
@@ -59,8 +58,8 @@ def salvaProduto():
 
 @produto_controller.route('/produto/confirmaExclusao/<id>')
 def confirmaExclusaoProduto(id):
-    API_URL = 'http://localhost:8080/produto/'+id
-    response = requests.get(API_URL)
+    chamadaAPI = f'http://{HOST_API}:{PORTA_API}/produto/{id}'
+    response = requests.get(chamadaAPI)
     produtoRetornado = response.json() 
     usuario = request.environ.get('beaker.session')['usuario']
     return template('confirmaExclusao.tpl',nomeObjeto='produto',descricaoObjeto=produtoRetornado.get('nome'),id=id,usuario=usuario,mostrarVoltarIndex=True,rotaRetorno='/produto') 
@@ -70,9 +69,8 @@ def confirmaExclusaoProduto(id):
 @produto_controller.route('/produto/excluir/<id>')
 def excluiProduto(id):
     try:
-        API_URL = 'http://localhost:8080/produto/' + id
-        print(API_URL)
-        response = requests.delete(API_URL)
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/produto/{id}'
+        response = requests.delete(chamadaAPI)
         if response.status_code!=200:
                 return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Excluir Produto")
     except Exception as e:

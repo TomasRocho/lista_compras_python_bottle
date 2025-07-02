@@ -1,6 +1,7 @@
 from bottle import Bottle, template, request, redirect
 import requests
 from datetime import datetime
+from config.constantes import HOST_API, PORTA_API
 
 
 usuario_controller = Bottle()
@@ -8,8 +9,8 @@ usuario_controller = Bottle()
 @usuario_controller.route('/usuario')
 def listaUsuario():
     try:
-        API_URL = 'http://localhost:8080/usuario'
-        response = requests.get(API_URL)
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/usuario'
+        response = requests.get(chamadaAPI)
         response.raise_for_status()
         usuarios = response.json() 
         for usr in usuarios:
@@ -27,8 +28,8 @@ def novoUsuario():
 
 @usuario_controller.route('/usuario/editar/<id>')
 def editaUsuario(id):
-    API_URL = 'http://localhost:8080/usuario/'+id
-    response = requests.get(API_URL)
+    chamadaAPI = f'http://{HOST_API}:{PORTA_API}/usuario/{id}'
+    response = requests.get(chamadaAPI)
     usuarioRetornado = response.json() 
     usuarioRetornado["dataNascimento"] = datetime.strptime(usuarioRetornado["dataNascimento"], "%Y-%m-%d").strftime("%d/%m/%Y")
     usuarioLogado = request.environ.get('beaker.session')['usuario']
@@ -44,22 +45,7 @@ def salvaUsuario():
         email = request.forms.get('email')
         administrador = 1 if request.forms.get('administrador') else 0
         senha = request.forms.get('senha')
-
-        API_URL = 'http://localhost:8080/usuario'
-        #inclusao
-        if id=='':
-            payload = {
-                'nome': nome,
-                'dataNascimento': dataNascimento,
-                'email': email,
-                'senha': senha
-            }
-            response = requests.post(API_URL,json=payload)
-            if response.status_code!=201:
-                return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Salvar Usuario")
-        #alteracao    
-        else:
-            payload = {
+        payload = {
                 'id': id,
                 'nome': nome,
                 'dataNascimento': dataNascimento,
@@ -67,7 +53,16 @@ def salvaUsuario():
                 'administrador': administrador,
                 'senha': senha
             }
-            response = requests.put(API_URL,json=payload)
+
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/usuario'
+        #inclusao
+        if id=='':
+            response = requests.post(chamadaAPI,json=payload)
+            if response.status_code!=201:
+                return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Salvar Usuario")
+        #alteracao    
+        else:
+            response = requests.put(chamadaAPI,json=payload)
             if response.status_code!=200:
                 return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Salvar Usuario")
 
@@ -77,8 +72,8 @@ def salvaUsuario():
 
 @usuario_controller.route('/usuario/confirmaExclusao/<id>')
 def confirmaExclusaoUsuario(id):
-    API_URL = 'http://localhost:8080/usuario/'+id
-    response = requests.get(API_URL)
+    chamadaAPI = f'http://{HOST_API}:{PORTA_API}/usuario/{id}'
+    response = requests.get(chamadaAPI)
     usuarioRetornado = response.json() 
     usuario = request.environ.get('beaker.session')['usuario']
     return template('confirmaExclusao.tpl',nomeObjeto='usuario',descricaoObjeto=usuarioRetornado.get('nome'),id=id,usuario=usuario,mostrarVoltarIndex=True,rotaRetorno='/usuario') 
@@ -88,9 +83,8 @@ def confirmaExclusaoUsuario(id):
 @usuario_controller.route('/usuario/excluir/<id>')
 def excluirUsuario(id):
     try:
-        API_URL = 'http://localhost:8080/usuario/' + id
-        print(API_URL)
-        response = requests.delete(API_URL)
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/usuario/{id}'
+        response = requests.delete(chamadaAPI)
         if response.status_code!=200:
                 return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Excluir Usuario")
     except Exception as e:
@@ -109,14 +103,14 @@ def salvaNovaSenha():
         senhaAntiga = request.forms.get('senhaAntiga')
         senhaNova = request.forms.get('senhaNova')
 
-        API_URL = 'http://localhost:8080/usuario/alterarSenha'
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/usuario/alterarSenha'
         
         payload = {
             'idUsuario': idUsuario,
             'senhaAntiga': senhaAntiga,
             'senhaNova': senhaNova
         }
-        response = requests.put(API_URL,json=payload)
+        response = requests.put(chamadaAPI,json=payload)
         if response.status_code!=200:
             return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao alterar senha")
 
@@ -141,13 +135,13 @@ def login():
         email = request.forms.get('email')
         senha = request.forms.get('senha')
 
-        API_URL = 'http://localhost:8080/login'
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/login'
         
         payload = {
             'email': email,
             'senha': senha
         }
-        response = requests.post(API_URL,json=payload)
+        response = requests.post(chamadaAPI,json=payload)
         if response.status_code!=200:
             return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Login inválido")
 

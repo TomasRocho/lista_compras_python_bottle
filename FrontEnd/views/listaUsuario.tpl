@@ -25,8 +25,8 @@
                     <td>{{usr['dataNascimento']}}</td>
                     <td>{{ "Sim" if usr['administrador'] == 1 else "Não" }}</td>
                     <td>
-                        <a href="/usuario/editar/{{usuario['id']}}">Editar</a>
-                        <a href="/usuario/confirmaExclusao/{{usuario['id']}}">Excluir</a>
+                        <a href="/usuario/editar/{{usr['id']}}">Editar</a>
+                        <a href="/usuario/confirmaExclusao/{{usr['id']}}">Excluir</a>
                     </td>
                 </tr>
             % end

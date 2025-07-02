@@ -2,6 +2,7 @@ from bottle import Bottle, template, request, redirect
 import requests
 from datetime import datetime
 from datetime import date
+from config.constantes import HOST_API, PORTA_API
 
 
 listaCompras_controller = Bottle()
@@ -11,10 +12,11 @@ def listaListasCompras():
     usuarioLogado = request.environ.get('beaker.session')['usuario']
     try:
 
-        API_URL = 'http://localhost:8080/listaCompras/getByIdUsuario/' + str(usuarioLogado['id'])
-        response = requests.get(API_URL)
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/listaCompras/getByIdUsuario/{usuarioLogado['id']}'
+        response = requests.get(chamadaAPI)
         response.raise_for_status()
         listas = response.json() 
+        #formata o campo data para o formato dd/mm/yyyy
         for lista in listas:
             lista["dataCompra"] = datetime.strptime(lista["dataCompra"], "%Y-%m-%d").strftime("%d/%m/%Y")
     except requests.RequestException as e:
@@ -25,24 +27,31 @@ def listaListasCompras():
 
 @listaCompras_controller.route('/listaCompras/novo')
 def novaLista():
-    API_URL_mercados = 'http://localhost:8080/mercado'
-    response = requests.get(API_URL_mercados)
+
+    #carrega a lista de mercados para popular o <select> do template de edição
+    chamadaAPI = f'http://{HOST_API}:{PORTA_API}/mercado'
+    response = requests.get(chamadaAPI)
     response.raise_for_status()
     mercados = response.json() 
+
     usuarioLogado = request.environ.get('beaker.session')['usuario']
     dataHoje = date.today().strftime("%d/%m/%Y")
     return template('editaListaCompras.tpl',listaCompras=None,usuario=usuarioLogado,mostrarVoltarIndex=True, mercados=mercados,dataHoje=dataHoje)
 
 @listaCompras_controller.route('/listaCompras/editar/<id>')
 def editaListaCompras(id):
-    API_URL = 'http://localhost:8080/listaCompras/'+id
-    response = requests.get(API_URL)
+    chamadaAPI = f'http://{HOST_API}:{PORTA_API}/listaCompras/{id}'
+    response = requests.get(chamadaAPI)
     listaRetornada = response.json() 
     listaRetornada["dataCompra"] = datetime.strptime(listaRetornada["dataCompra"], "%Y-%m-%d").strftime("%d/%m/%Y")
-    API_URL_mercados = 'http://localhost:8080/mercado'
-    response = requests.get(API_URL_mercados)
+
+    #carrega a lista de mercados para popular o <select> do template de edição
+    chamadaAPI = f'http://{HOST_API}:{PORTA_API}/mercado'
+    response = requests.get(chamadaAPI)
     response.raise_for_status()
     mercados = response.json() 
+
+
     usuarioLogado = request.environ.get('beaker.session')['usuario']
     return template('editaListaCompras.tpl',listaCompras=listaRetornada,usuario=usuarioLogado,mostrarVoltarIndex=True, mercados=mercados,dataHoje=None) 
 
@@ -52,32 +61,27 @@ def salvaCompras():
         nome = request.forms.getunicode('nome')
         id = request.forms.get('id')
         dataCompra = request.forms.get('dataCompra')
+        #formata o campo data para o formato "yyyy-mm-aa" para ser enviado ao backend
         dataCompra = datetime.strptime(dataCompra, "%d/%m/%Y").strftime("%Y-%m-%d")
         idMercado = request.forms.get('mercado')
         idUsuario = request.forms.get('idUsuario')
-
-        API_URL = 'http://localhost:8080/listaCompras'
-        #inclusao
-        if id=='':
-            payload = {
-                'nome': nome,
-                'dataCompra': dataCompra,
-                'idMercado': idMercado,
-                'idUsuario': idUsuario
-            }
-            response = requests.post(API_URL,json=payload)
-            if response.status_code!=201:
-                return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Salvar Lista")
-        #alteracao    
-        else:
-            payload = {
+        payload = {
                 'id': id,
                 'nome': nome,
                 'dataCompra': dataCompra,
                 'idMercado': idMercado,
                 'idUsuario': idUsuario
             }
-            response = requests.put(API_URL,json=payload)
+
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/listaCompras'
+        #inclusao
+        if id=='':
+            response = requests.post(chamadaAPI,json=payload)
+            if response.status_code!=201:
+                return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Salvar Lista")
+        #alteracao    
+        else:
+            response = requests.put(chamadaAPI,json=payload)
             if response.status_code!=200:
                 return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Salvar Lista")
 
@@ -87,8 +91,8 @@ def salvaCompras():
 
 @listaCompras_controller.route('/listaCompras/confirmaExclusao/<id>')
 def confirmaExclusaoLista(id):
-    API_URL = 'http://localhost:8080/listaCompras/'+id
-    response = requests.get(API_URL)
+    chamadaAPI = f'http://{HOST_API}:{PORTA_API}/listaCompras/{id}'
+    response = requests.get(chamadaAPI)
     lista = response.json() 
     usuario = request.environ.get('beaker.session')['usuario']
     return template('confirmaExclusao.tpl',nomeObjeto='listaCompras',descricaoObjeto=lista.get('nome'),id=id,usuario=usuario,mostrarVoltarIndex=True,rotaRetorno='/listaCompras') 
@@ -98,8 +102,8 @@ def confirmaExclusaoLista(id):
 @listaCompras_controller.route('/listaCompras/excluir/<id>')
 def excluirLista(id):
     try:
-        API_URL = 'http://localhost:8080/listaCompras/' + id
-        response = requests.delete(API_URL)
+        chamadaAPI = f'http://{HOST_API}:{PORTA_API}/listaCompras/{id}'
+        response = requests.delete(chamadaAPI)
         if response.status_code!=200:
                 return template('erro.tpl',mensagem=response.json().get('erro'), tipoErro="Erro ao Excluir Lista")
     except Exception as e:

@@ -38,7 +38,9 @@
 </div>
 <script>
 function mostrarValorMedio(idProduto,nomeProduto) {
-    fetch(`http://localhost:8080/itemCompra/valorMedio/${idProduto}`)
+    HOST_API = "localhost"
+    PORTA_API = "8080"
+    fetch(`http://${HOST_API}:${PORTA_API}/itemCompra/valorMedio/${idProduto}`)
         .then(response => response.json())
         .then(data => {
             valorMedio = 0
