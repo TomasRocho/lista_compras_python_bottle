@@ -9,9 +9,21 @@ Listas personalizadas por usuário contendo controle de mercados e produtos, val
 
 Desenvolvido em Python e Bottle para ambiente web.
 
-É dividido em dois projetos: Backend(API rest) e Frontend
+É dividido em dois projetos: Backend(API rest) e Frontend.
 
 Utiliza além do Bottle, a biblioteca Beaker.Middleware para controle de variáveis de Sessão no Frontend.
+
+O Backend implementa uma API Rest, armazenando os dados através do banco SQLite. As rotas estão definidas nos controllers e utilizam os 4 comando básico do padrão Rest: get, post, delete e put, sempre devolvendo dados em formato JSON.
+
+Os atributos do diagrama de classes estão implementados em classes Python na pasta "models".
+
+Os métodos do diagrama de classes estão implementados em classes Python na pasta "services".
+
+O Frontend é responsável por responder com páginas HTML às rotas requisitadas no browser.
+
+Praticamente toda a lógica de negócios está implementada no Backend.
+
+Além do Bottle e do Middleware, a aplicação também utiliza outras bibliotecas internas do Python, tais como: json, os, datetime, SQLite3 entre outras.
 
 O enunciado do trabalho pode ser encontrado aqui:
 - [Trabalho Final](https://github.com/lboaventura25/OO-T06_2025.1_UnB_FCTE/tree/main/trabalhos/epf)
