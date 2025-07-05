@@ -3,9 +3,14 @@
 ## Descrição do Projeto
 
 Desenvolvimento de um sistema de criação de lista de compras. 
+
 Listas personalizadas por usuário contendo controle de mercados e produtos, valores médios de produtos e valor total de uma lista de compra.
+
+
 Desenvolvido em Python e Bottle para ambiente web.
+
 É dividido em dois projetos: Backend(API rest) e Frontend
+
 Utiliza além do Bottle, a biblioteca Beaker.Middleware para controle de variáveis de Sessão no Frontend.
 
 O enunciado do trabalho pode ser encontrado aqui:
@@ -32,10 +37,13 @@ O enunciado do trabalho pode ser encontrado aqui:
     * pip install beaker
 
 2. **Execução:**  
-    *Backend: ir para a pasta Backend e executar python app.py (ou python3 app.py) - por default roda na porta 8080 
-    *Frontend: ir para a pasta Frontend e executar python app.py (ou python3 app.py) - por default roda na porta 8081
-    *Abrir o browser no endereço http://localhost/8081
-    *Como dados de testes são criados, utilizar os usuarios usuarionormal@unb.br ou usuarioadministrador@unb.br, ambos com senha "segredo"
+    * Backend: ir para a pasta Backend e executar python app.py (ou python3 app.py) - por default roda na porta 8080
+ 
+    * Frontend: ir para a pasta Frontend e executar python app.py (ou python3 app.py) - por default roda na porta 8081
+
+    * Abrir o browser no endereço http://localhost/8081
+
+    * Como dados de testes são criados, utilizar os usuarios usuarionormal@unb.br ou usuarioadministrador@unb.br, ambos com senha "segredo"
 
 3. **Diagrama de Classes:**
     ![DiagramaClasses.png](DiagramaClasses.png)
