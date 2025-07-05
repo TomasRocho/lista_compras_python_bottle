@@ -6,7 +6,7 @@ from controllers.usuario_controller import usuario_controller
 from controllers.listaCompras_controller import listaCompras_controller
 from controllers.itemCompra_controller import itemCompra_controller
 from beaker.middleware import SessionMiddleware
-from middleware.auth import login_required,admin_required
+from decorators.auth import login_required,admin_required
 from config.constantes import HOST, PORTA
 
 app = Bottle()

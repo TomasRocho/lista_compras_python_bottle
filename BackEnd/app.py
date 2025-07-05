@@ -5,6 +5,7 @@ from controllers.usuario_controller import usuario_controller
 from controllers.produto_controller import produto_controller
 from controllers.listaCompras_controller import listaCompras_controller
 from controllers.itemCompra_controller import itemCompra_controller
+from config.constantes import PORTA,HOST
 
 criar_banco()
 app = Bottle()
@@ -13,9 +14,6 @@ app.merge(usuario_controller)
 app.merge(produto_controller)
 app.merge(listaCompras_controller)
 app.merge(itemCompra_controller)
-
-HOST = "localhost"
-PORTA = 8080
 
 if __name__ == '__main__':
     run(app,host=HOST,port=PORTA, debug=True,reloader=True)

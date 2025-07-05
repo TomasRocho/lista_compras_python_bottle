@@ -13,6 +13,5 @@
         <p>{{mensagem}}</p>
         <a href="javascript:history.back()">Voltar para a página anterior</a>
     </div>
-
 </body>
 </html>
