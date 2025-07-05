@@ -1,5 +1,6 @@
 import sqlite3 
 import os
+from config.constantes import NOME_BANCO
 
 
 def get_connection():
@@ -7,7 +8,7 @@ def get_connection():
     # Pega o caminho da pasta onde o script está
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     # Monta o caminho para a pasta 'data'
-    db_path = os.path.join(BASE_DIR, '..', 'data', 'listaCompras.db')
+    db_path = os.path.join(BASE_DIR, '..', 'data', NOME_BANCO)
 
     conn = sqlite3.connect(db_path)
     #comando no SQLite para ativar as regras de integridade
