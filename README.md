@@ -13,7 +13,7 @@ Desenvolvido em Python e Bottle para ambiente web.
 
 Utiliza além do Bottle, a biblioteca Beaker.Middleware para controle de variáveis de Sessão no Frontend.
 
-O Backend implementa uma API Rest, armazenando os dados através do banco SQLite. As rotas estão definidas nos controllers e utilizam os 4 comando básico do padrão Rest: get, post, delete e put, sempre devolvendo dados em formato JSON.
+O Backend implementa uma API Rest, armazenando os dados através do banco SQLite. As rotas estão definidas nos controllers e utilizam os 4 comandos básicos do padrão Rest: get, post, delete e put, sempre devolvendo dados em formato JSON.
 
 Os atributos do diagrama de classes estão implementados em classes Python na pasta "models".
 
@@ -24,6 +24,8 @@ O Frontend é responsável por responder com páginas HTML às rotas requisitada
 Praticamente toda a lógica de negócios está implementada no Backend.
 
 Além do Bottle e do Middleware, a aplicação também utiliza outras bibliotecas internas do Python, tais como: json, os, datetime, SQLite3 entre outras.
+
+O Frontend utiliza toda a formatação html através de CSS, sendo JavaScript utilizado apenas em um pequeno trecho da aplicação (para mostrar os valores médio dos produtos).
 
 O enunciado do trabalho pode ser encontrado aqui:
 - [Trabalho Final](https://github.com/lboaventura25/OO-T06_2025.1_UnB_FCTE/tree/main/trabalhos/epf)
