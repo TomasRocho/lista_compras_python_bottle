@@ -54,7 +54,6 @@ session_opts = {
 #A biblioteca abaixo permite que o Bottle armazene variáveis de sessão para compartilhar por toda a aplicação
 application = SessionMiddleware(app, session_opts)
 
-
 if __name__ == '__main__':
     run(application,host=HOST,port=PORTA, debug=True,reloader=True)
     
