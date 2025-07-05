@@ -25,9 +25,11 @@ O enunciado do trabalho pode ser encontrado aqui:
 ## Instruções para Compilação e Execução
 
 1. **Compilação:**  
-    *Após a instalação do interpretador Python, é necessário instalar a biblioteca Bottle e a biblioteca beaker.middleware.
-    *pip install bottle
-    *pip install beaker
+    * Após a instalação do interpretador Python, é necessário instalar a biblioteca Bottle e a biblioteca beaker.middleware.
+
+    * pip install bottle
+
+    * pip install beaker
 
 2. **Execução:**  
     *Backend: ir para a pasta Backend e executar python app.py (ou python3 app.py) - por default roda na porta 8080 
