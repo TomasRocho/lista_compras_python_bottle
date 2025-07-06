@@ -7,8 +7,18 @@ def criar_banco():
 
     # Pega o caminho da pasta onde o script está
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    # Monta o caminho para a pasta 'data' 
-    db_path = os.path.join(BASE_DIR, '..', 'data', NOME_BANCO)
+
+    
+    # Monta o caminho para a pasta 'data'
+    data_dir = os.path.join(BASE_DIR, '..', 'data')
+
+    # Cria a pasta 'data' caso não exista
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+
+    # Monta o caminho completo do banco de dados
+    db_path = os.path.join(data_dir, NOME_BANCO)
+    
     if os.path.exists(db_path):
         return
 
