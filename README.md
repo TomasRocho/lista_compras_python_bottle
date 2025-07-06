@@ -6,12 +6,11 @@ Desenvolvimento de um sistema de criação de lista de compras.
 
 Listas personalizadas por usuário contendo controle de mercados e produtos, valores médios de produtos e valor total de uma lista de compra.
 
-
 Desenvolvido em Python e Bottle para ambiente web.
 
 É dividido em dois projetos: Backend(API rest) e Frontend.
 
-Utiliza além do Bottle, a biblioteca Beaker.Middleware para controle de variáveis de Sessão no Frontend.
+Utiliza além do Bottle, a biblioteca Beaker.Middleware para controle de variáveis de Sessão no Frontend e a biblioteca Requests para fazer a chamadas de API do FrontEnd para o BackEnd. 
 
 O Backend implementa uma API Rest, armazenando os dados através do banco SQLite. As rotas estão definidas nos controllers e utilizam os 4 comandos básicos do padrão Rest: get, post, delete e put, sempre devolvendo dados em formato JSON.
 
@@ -23,7 +22,7 @@ O Frontend é responsável por responder com páginas HTML às rotas requisitada
 
 Praticamente toda a lógica de negócios está implementada no Backend.
 
-Além do Bottle e do Middleware, a aplicação também utiliza outras bibliotecas internas do Python, tais como: json, os, datetime, SQLite3 entre outras.
+Além do Bottle, Middleware e Requests, a aplicação também utiliza outras bibliotecas internas do Python, tais como: json, os, datetime, SQLite3 entre outras.
 
 O Frontend utiliza toda a formatação html através de CSS, sendo JavaScript utilizado apenas em um pequeno trecho da aplicação (para mostrar os valores médio dos produtos).
 
@@ -44,16 +43,22 @@ O enunciado do trabalho pode ser encontrado aqui:
 ## Instruções para Compilação e Execução
 
 1. **Compilação:**  
-    * Após a instalação do interpretador Python, é necessário instalar a biblioteca Bottle e a biblioteca beaker.middleware.
+    * Após a instalação do interpretador Python, e do gerenciador de ambiente virtual (venv) é necessário criar e ativar o ambiente virtual e nele instalar as bibliotecas Bottle, beaker.middleware e requests.
 
+    * python3 -m venv myenv (criação do ambiente virtual myenv)
+
+    * source myenv/bin/activate (ativação do ambiente virtual myenv)
+    
     * pip install bottle
 
     * pip install beaker
 
+    * pip install requests
+
 2. **Execução:**  
-    * Backend: ir para a pasta Backend e executar python app.py (ou python3 app.py) - por default roda na porta 8080
+    * Backend: ir para a pasta Backend e executar python3 app.py (ou python app.py) - por default roda na porta 8080. Não esquecer que o ambiente virtual myenv deve estar ativo.
  
-    * Frontend: ir para a pasta Frontend e executar python app.py (ou python3 app.py) - por default roda na porta 8081
+    * Frontend: ir para a pasta Frontend e executar python3 app.py (ou python app.py) - por default roda na porta 8081. Não esquecer que o ambiente virtual myenv deve estar ativo.
 
     * Abrir o browser no endereço http://localhost/8081
 
