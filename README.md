@@ -1,4 +1,4 @@
-# Sistema Acadêmico - FCTE
+# Lista de Compras Web 
 
 ## Descrição do Projeto
 
